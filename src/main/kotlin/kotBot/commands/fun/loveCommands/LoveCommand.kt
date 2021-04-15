@@ -1,4 +1,4 @@
-package kotBot.commands.loveCommands
+package kotBot.commands.`fun`.loveCommands
 
 import com.jagrosh.jdautilities.command.CommandEvent
 import dev.minn.jda.ktx.Embed
@@ -10,7 +10,7 @@ import java.util.*
 /**
  * This abstract class is for LoveCommands, which is the underlying code for all of the Valentine's day commands.
  */
-abstract class LoveCommands : KopyCommand() {
+abstract class LoveCommand : KopyCommand() {
     /**
      * The gifs the command can pick from.
      */
@@ -109,7 +109,7 @@ abstract class LoveCommands : KopyCommand() {
         }
     }
 
-    class Hug : LoveCommands() {
+    class Hug : LoveCommand() {
         init {
             this.name = "Hug"
             this.help = "Hug someone!"
@@ -169,7 +169,7 @@ abstract class LoveCommands : KopyCommand() {
         )
     }
 
-    class Kiss : LoveCommands() {
+    class Kiss : LoveCommand() {
         init {
             this.name = "Kiss"
             this.help = "Kiss someone!"
@@ -209,7 +209,7 @@ abstract class LoveCommands : KopyCommand() {
         )
     }
 
-    class Cuddle : LoveCommands() {
+    class Cuddle : LoveCommand() {
         init {
             this.name = "Cuddle"
             this.help = "Cuddle someone!"

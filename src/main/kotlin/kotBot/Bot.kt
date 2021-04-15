@@ -3,7 +3,8 @@ package kotBot
 import com.jagrosh.jdautilities.command.CommandClient
 import com.jagrosh.jdautilities.command.CommandClientBuilder
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter
-import kotBot.commands.loveCommands.LoveCommands
+import kotBot.commands.`fun`.loveCommands.LoveCommand
+import kotBot.commands.`fun`.randomImageCommands.NoContextCmd
 import kotBot.utils.Config
 import kotBot.utils.KopyDB
 import net.dv8tion.jda.api.JDA
@@ -36,9 +37,10 @@ class Bot() {
             .setPrefix("kk")
             .setAlternativePrefix("k!")
             .addCommands(
-                LoveCommands.Hug(),
-                LoveCommands.Kiss(),
-                LoveCommands.Cuddle()
+                LoveCommand.Hug(),
+                LoveCommand.Kiss(),
+                LoveCommand.Cuddle(),
+                NoContextCmd()
             )
             .build()
 

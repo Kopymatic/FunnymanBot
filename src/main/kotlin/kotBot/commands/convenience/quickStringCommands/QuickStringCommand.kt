@@ -1,4 +1,4 @@
-package kotBot.commands.quickStringCommands
+package kotBot.commands.convenience.quickStringCommands
 
 import com.jagrosh.jdautilities.command.CommandEvent
 import kotBot.utils.KopyCommand
