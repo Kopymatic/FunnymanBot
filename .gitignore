@@ -1,2 +1,4 @@
 /build/
 /.gradle/
+/Config.txt
+/Config.kt
