@@ -1,4 +1,4 @@
-package kotBot.commands.`fun`.loveCommands
+package kotBot.commands.`fun`
 
 import com.jagrosh.jdautilities.command.CommandEvent
 import dev.minn.jda.ktx.Embed
@@ -92,7 +92,7 @@ abstract class LoveCommand : KopyCommand() {
 
             event.channel.sendMessage(
                 Embed(
-                    color = Reference().defaultColor.rgb,
+                    color = Reference.rgb,
                     title = "${event.member.effectiveName} $embedTitleText ${event.message.mentionedMembers[0].effectiveName}",
                     image = gif,
                     footerText = "That's $timesPerformed $embedFooterText now!"
