@@ -2,10 +2,14 @@ package kotBot.utils
 
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
+import dev.minn.jda.ktx.Embed
 import kotBot.Bot
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.Message
+import net.dv8tion.jda.api.entities.MessageEmbed
 
 abstract class KopyCommand: Command() {
-    val kdb = Bot().kdb
+    val kdb = Reference.kdb
     /**
      * -- DO NOT OVERRIDE --
      * Use onCommandRun instead
@@ -27,4 +31,20 @@ abstract class KopyCommand: Command() {
     private fun trackStats(event: CommandEvent) {
         //TODO("Not yet implemented! - needs database")
     }
+
+    open fun getAdvancedHelp(): EmbedBuilder? {
+        return null
+    }
+}
+
+fun Message.hasAttachments(): Boolean {
+    return this.attachments.size > 0
+}
+
+fun CommandEvent.replyWithReference(message: String) {
+    this.channel.sendMessage(message).reference(this.message).queue()
+}
+
+fun CommandEvent.replyWithReference(embed: MessageEmbed) {
+    this.channel.sendMessage(embed).reference(this.message).queue()
 }
