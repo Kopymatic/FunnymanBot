@@ -7,7 +7,7 @@ class KopyDB {
     private val url = Config().url
     private val user = Config().userName
     private val password = Config().password
-    private var connection: Connection
+    var connection: Connection
 
     init {
         connection = connect()
