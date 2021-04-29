@@ -60,10 +60,10 @@ abstract class RandomImageCommand : KopyCommand() {
         }
 
         //DEBUG STATEMENT
-        println(
-            "New ${this.name} entry:\nid: DEFAULT\nguildID: ${event.guild.id}\nImageLink: ${event.message.attachments[0].url}\n" +
-                    "LinkTag: $linkTag\nTextTag: $textTag\nImporterID: ${event.member.id}\nImportMessageID: ${event.message.id}"
-        )
+//        println(
+//            "New ${this.name} entry:\nid: DEFAULT\nguildID: ${event.guild.id}\nImageLink: ${event.message.attachments[0].url}\n" +
+//                    "LinkTag: $linkTag\nTextTag: $textTag\nImporterID: ${event.member.id}\nImportMessageID: ${event.message.id}"
+//        )
 
         val ps = kdb.connection.prepareStatement(
             """
@@ -87,7 +87,7 @@ abstract class RandomImageCommand : KopyCommand() {
         event.reactSuccess()
     }
 
-    fun edit() {
+    private fun edit() {
         val toEdit = try {
             event.args.split(" ")[1].toInt()
         } catch (e: NumberFormatException) {
@@ -288,53 +288,77 @@ abstract class RandomImageCommand : KopyCommand() {
             color = Reference.rgb
         ))
     }
+
+    override fun getAdvancedHelp(): EmbedBuilder? {
+        return EmbedBuilder()
+            .setTitle("How to use ${this.name}:")
+            .setDescription("${this.name} is a simple command with many complex operations you can do. Here's an explanation.")
+            .addField("Getting a random ${this.name} entry:", "This is as simple as running the command with no arguments", false)
+            .addField("Getting a specific ${this.name} entry:", "Run the command with a search or an entry id to get a specific entry" +
+                    "\n**Examples:** `${Reference.mainPrefix}${this.name} (search term)` or `${Reference.mainPrefix}${this.name} (entry id)`", false)
+            .addField("Importing:",
+                "To import an image to the database, send the command with an attachment. Optionally, you can supply a description and/or a link." +
+                "\n**Note:** Currently, only **Discord message jump links** are supported. Videos are **not** currently supported.", false)
+            .addField("Editing:",
+                "If you ever wish to edit the text or link of something you previously imported, " +
+                        "send the command the same as you would with importing, but with edit and an id at the beginning and no attachment" +
+                        "\n**Example:** `${Reference.mainPrefix}${this.name} edit (entry ID) (new text here) (new link here)`" +
+                        "\n**Note:** Editing an import that has a link with no link will delete that link.", false)
+            .addField("Deleting:", "If you wish to delete something you imported, just run the command with delete and an id" +
+                    "\n**Example**: `${Reference.mainPrefix}${this.name} delete (entry ID)`", false)
+            .setColor(Reference.defaultColor)
+    }
 }
 
 class NoContextCmd : RandomImageCommand() {
     init {
-        this.name = "NoContext"
-        this.aliases = arrayOf("nc")
-        this.help = "Shows a random no context image from the group chat"
-        this.arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
-        this.dbTableName = "NoContext"
-        this.footers = arrayOf("Laugh. Now.", "laugh! >:(", "nice meme, very poggers")
+        name = "NoContext"
+        aliases = arrayOf("nc")
+        help = "Shows a random no context image from the group chat"
+        arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
+        dbTableName = "NoContext"
+        footers = arrayOf("Laugh. Now.", "laugh! >:(", "nice meme, very poggers")
+        category = Reference.funCategory
     }
 }
 
 class PeopleCmd : RandomImageCommand() {
     init {
-        this.name = "People"
-        this.aliases = arrayOf("me", "ppl")
-        this.help = "Shows a random person"
-        this.arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
-        this.dbTableName = "People"
-        this.footers =
+        name = "People"
+        aliases = arrayOf("me", "ppl")
+        help = "Shows a random person"
+        arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
+        dbTableName = "People"
+        footers =
             arrayOf("Oh this- this is beautiful", "Looking fabulous!", "thats a cute ass person ya got there")
+        category = Reference.funCategory
     }
 }
 
 class PetCmd : RandomImageCommand() {
     init {
-        this.name = "Pet"
-        this.aliases = arrayOf("dog", "cat")
-        this.help = "Shows a random pet"
-        this.arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
-        this.dbTableName = "Pets"
-        this.footers = arrayOf(
+        name = "Pet"
+        aliases = arrayOf("dog", "cat")
+        help = "Shows a random pet"
+        arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
+        dbTableName = "Pets"
+        footers = arrayOf(
             "Oh this- this is beautiful",
             "Looking fabulous!",
             "awwww cute pet",
             "thats a cute ass pet ya got there"
         )
+        category = Reference.funCategory
     }
 }
 
 class MemeCmd : RandomImageCommand() {
     init {
-        this.name = "Meme"
-        this.help = "Shows a random meme"
-        this.arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
-        this.dbTableName = "Memes"
-        this.footers = arrayOf("haha funny", "nice meme, very poggers", "laugh! >:(")
+        name = "Meme"
+        help = "Shows a random meme"
+        arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
+        dbTableName = "Memes"
+        footers = arrayOf("haha funny", "nice meme, very poggers", "laugh! >:(")
+        category = Reference.funCategory
     }
 }

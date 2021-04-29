@@ -69,6 +69,18 @@ fun main() {
                 );
             """.trimIndent()
     )
+
+    create( //Create dayLogger
+        """
+            CREATE TABLE DayLogger (
+               logTime TIMESTAMP NOT NULL,
+               userID TEXT NOT NULL,
+               logRating INT NOT NULL,
+               logTextRating TEXT,
+               logSummary TEXT
+            );
+        """.trimIndent()
+    )
 }
 
 fun create(sql: String) {

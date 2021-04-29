@@ -12,6 +12,7 @@ class EmbedCmd : KopyCommand() {
         name = "Embed"
         help = "Allows you to make complex embeds with a command"
         arguments = "Run the command with no arguments for detailed help."
+        category = Reference.utilityCategory
     }
 
     override fun onCommandRun(event: CommandEvent) {

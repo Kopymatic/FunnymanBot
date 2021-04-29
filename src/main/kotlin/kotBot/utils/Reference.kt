@@ -1,25 +1,39 @@
 package kotBot.utils
 
+import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandClient
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter
+import jdk.jfr.Event
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
 import java.awt.Color
+import java.time.format.DateTimeFormatterBuilder
 
-class Reference () {
+import java.time.format.DateTimeFormatter
+
+class Reference {
     companion object {
         const val botName = "KotBot"
         const val version = "Alpha"
         val status = Activity.watching(version)
+        val dateFormatter: DateTimeFormatter = DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("L/d/yy h:mm a").toFormatter()
 
-        val mainPrefix = "kk"
-        val alternativePrefix = "k!"
+        //Categories!
+        val convenienceCategory = Command.Category("Convenience")
+        val funCategory = Command.Category("Fun")
+        val utilityCategory = Command.Category("Utility")
+        val quickStringCategory = Command.Category("QuickStringCommands")
+        val categories = arrayOf(convenienceCategory, funCategory, utilityCategory, quickStringCategory)
+
+        const val mainPrefix = "kk"
+        const val alternativePrefix = "k!"
+        val prefixes = arrayOf(mainPrefix, alternativePrefix)
         val defaultColor: Color = Color(255, 111, 255)
         val rgb: Int = Color(255, 111, 255).rgb
 
         val kdb = KopyDB()
         lateinit var jda: JDA
-        lateinit var waiter: EventWaiter
+        val waiter: EventWaiter = EventWaiter()
         lateinit var cmdClient: CommandClient
     }
 }

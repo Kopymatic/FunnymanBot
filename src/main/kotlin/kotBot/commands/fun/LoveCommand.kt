@@ -61,7 +61,6 @@ abstract class LoveCommand : KopyCommand() {
             val userID: String = event.author.id //Get the IDs we need
             val mentionID: String = event.message.mentionedUsers[0].id
 
-            println("SELECT * FROM LoveCommands WHERE SenderID = '$userID' AND ReceiverID = '$mentionID' AND ActionIdentifier = '${this.actionIdentifier}';")
             val rs = kdb.querySQL(
                 "SELECT * FROM LoveCommands WHERE SenderID = '$userID' AND ReceiverID = '$mentionID' AND ActionIdentifier = '${this.actionIdentifier}';"
             )
@@ -69,15 +68,11 @@ abstract class LoveCommand : KopyCommand() {
             val timesPerformed: Int
             if(rs.next()) {
                 timesPerformed = rs.getInt("TimesPerformed") + 1
-                println("UPDATE LoveCommands " +
-                        "SET TimesPerformed = $timesPerformed " +
-                        "WHERE SenderID = '$userID' AND ReceiverID = '$mentionID' AND ActionIdentifier = '${this.actionIdentifier}';")
                 kdb.updateSQL(
                     "UPDATE LoveCommands " +
                         "SET TimesPerformed = $timesPerformed " +
                         "WHERE SenderID = '$userID' AND ReceiverID = '$mentionID' AND ActionIdentifier = '${this.actionIdentifier}';")
             } else {
-                print("INSERT INTO LoveCommands VALUES ('$userID', '$mentionID', '${this.actionIdentifier}', 1);")
                 kdb.updateSQL(
                     "INSERT INTO LoveCommands VALUES ('$userID', '$mentionID', '${this.actionIdentifier}', 1);"
                 )
@@ -111,10 +106,11 @@ abstract class LoveCommand : KopyCommand() {
 
     class Hug : LoveCommand() {
         init {
-            this.name = "Hug"
-            this.help = "Hug someone!"
+            name = "Hug"
+            help = "Hug someone!"
             reactionPercent = 40
             possibleReactions = arrayOf("U+2764", "U+1F49B")
+            category = Reference.funCategory
         }
 
         override var actionIdentifier: String = "hugg"
@@ -171,9 +167,10 @@ abstract class LoveCommand : KopyCommand() {
 
     class Kiss : LoveCommand() {
         init {
-            this.name = "Kiss"
-            this.help = "Kiss someone!"
+            name = "Kiss"
+            help = "Kiss someone!"
             reactionPercent = 60
+            category = Reference.funCategory
         }
 
         override var actionIdentifier: String = "kiss"
@@ -211,9 +208,10 @@ abstract class LoveCommand : KopyCommand() {
 
     class Cuddle : LoveCommand() {
         init {
-            this.name = "Cuddle"
-            this.help = "Cuddle someone!"
+            name = "Cuddle"
+            help = "Cuddle someone!"
             reactionPercent = 85
+            category = Reference.funCategory
         }
 
         override var actionIdentifier: String = "cudd"
