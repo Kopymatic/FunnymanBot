@@ -4,9 +4,11 @@ import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 import dev.minn.jda.ktx.Embed
 import kotBot.Bot
+import kotlinx.coroutines.GlobalScope
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
+import java.util.*
 
 abstract class KopyCommand: Command() {
     val kdb = Reference.kdb
@@ -17,7 +19,9 @@ abstract class KopyCommand: Command() {
     override fun execute(event: CommandEvent?) {
         if(event == null) return
         trackStats(event)
-        onCommandRun(event)
+        GlobalScope.run {
+            onCommandRun(event)
+        }
     }
 
     /**
@@ -35,7 +39,15 @@ abstract class KopyCommand: Command() {
     open fun getAdvancedHelp(): EmbedBuilder? {
         return null
     }
+
+    fun getAllAliases(): List<String> {
+        val aliases: MutableList<String> = ArrayList()
+        aliases.add(name)
+        aliases.addAll(listOf(*getAliases()))
+        return aliases
+    }
 }
+
 
 fun Message.hasAttachments(): Boolean {
     return this.attachments.size > 0
