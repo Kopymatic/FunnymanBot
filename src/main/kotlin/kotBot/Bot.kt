@@ -2,23 +2,23 @@ package kotBot
 
 import com.jagrosh.jdautilities.command.CommandClientBuilder
 import kotBot.commands.`fun`.*
-import kotBot.commands.`fun`.randomImageCommands.MemeCmd
-import kotBot.commands.`fun`.randomImageCommands.NoContextCmd
-import kotBot.commands.`fun`.randomImageCommands.PeopleCmd
-import kotBot.commands.`fun`.randomImageCommands.PetCmd
+import kotBot.commands.`fun`.MemeCmd
+import kotBot.commands.`fun`.NoContextCmd
+import kotBot.commands.`fun`.PeopleCmd
+import kotBot.commands.`fun`.PetCmd
 import kotBot.commands.convenience.ChooseCmd
 import kotBot.commands.convenience.HelpCmd
 import kotBot.commands.convenience.PollCmd
+import kotBot.commands.convenience.quickStringCommands.QuickStringCommand
 import kotBot.commands.util.DayTrackerCmd
 import kotBot.commands.util.EmbedCmd
-import kotBot.utils.Config
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
 import net.dv8tion.jda.api.utils.cache.CacheFlag
 
 fun main() {
-    Bot().createBot(Config().token)
+    Bot().createBot(Reference.token)
     //TODO make this load from a JSON config file
 }
 
@@ -42,6 +42,18 @@ class Bot {
             InsultCmd(),
             OneVOneCmd(),
             RateCmd(),
+            QuickStringCommand.Lenny(),
+            QuickStringCommand.LennyConcern(),
+            QuickStringCommand.Rick(),
+            QuickStringCommand.LennyHug(),
+            QuickStringCommand.LennyKiss(),
+            QuickStringCommand.AddSpaces(),
+            QuickStringCommand.Owoifier(),
+            QuickStringCommand.Scrambler(),
+            QuickStringCommand.Reverser(),
+            QuickStringCommand.Say(),
+            QuickStringCommand.Alphabetizer(),
+            QuickStringCommand.RandomCaps()
         )
     }
 
