@@ -5,20 +5,15 @@ import kotBot.Bot.Companion.allCommands
 import kotBot.utils.Reference.Companion.mainPrefix
 import kotBot.utils.KopyCommand
 import com.jagrosh.jdautilities.command.CommandEvent
-import kotBot.Bot
 import kotBot.utils.EmbedPaginator
 import net.dv8tion.jda.api.EmbedBuilder
 import kotBot.utils.Reference
 import kotBot.utils.replyWithReference
-import kotlinx.coroutines.processNextEventInCurrentThread
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.exceptions.PermissionException
-import java.util.Objects
 import java.util.concurrent.TimeUnit
 
 class HelpCmd : KopyCommand() {
-    private val waiter = Reference.waiter
-
     init {
         name = "Help"
         help = "Get help with various commands"

@@ -1,4 +1,4 @@
-package kotBot.commands.`fun`.randomImageCommands
+package kotBot.commands.`fun`
 
 import com.jagrosh.jdautilities.command.CommandEvent
 import dev.minn.jda.ktx.Embed
@@ -11,7 +11,6 @@ import java.awt.Color
 import java.sql.ResultSet
 import java.util.*
 import java.util.concurrent.TimeUnit
-
 
 abstract class RandomImageCommand : KopyCommand() {
     /**
@@ -232,7 +231,7 @@ abstract class RandomImageCommand : KopyCommand() {
                         .setText(EmbedBuilder.ZERO_WIDTH_SPACE)
                         .setEventWaiter(Reference.waiter)
                         .setTimeout(2, TimeUnit.MINUTES)
-                        .waitOnSinglePage(true)
+                        .waitOnSinglePage(false)
                         .setLeftRightText("l", "r")
 
                     var pageNum = 1

@@ -17,6 +17,14 @@ class RateCmd : KopyCommand() {
 
     override fun onCommandRun(event: CommandEvent) {
         val args = event.args
+        if(args.contains("harley", true) || (event.author.id == "432342730790928384" && args.isBlank()) || args.contains("harlie", true) || args.contains("harle", true) ) {
+            if (args.isEmpty()) {
+                event.reply("I'll ${verb[Random().nextInt(verb.size)]} ${event.member.asMention} ${Random().nextInt(17) + 8}/10")
+            } else {
+                event.reply("I'll ${verb[Random().nextInt(verb.size)]} $args ${Random().nextInt(17) + 8}/10")
+            }
+            return
+        }
         if (args.isEmpty()) {
             event.reply("I'll ${verb[Random().nextInt(verb.size)]} ${event.member.asMention} ${getRating()}")
         } else {
@@ -38,7 +46,7 @@ class RateCmd : KopyCommand() {
         "they/them", "pog/champ", "poggers/10", "unpoggers :pensive:", "gamer/20", "nice/69", "un-nice/69", "beautiful/10",
         "cute/25", "hot/420", "cold/2", "divide by zero error/0", "awesome/10", "ugly/10", "cool/5",
         "nice cock bro. a little on the small side, but the shape is overall pretty symmetrical, and your balls have just the right amount of hair. the council rates it 7/10.",
-        "6/9", "out of / ideas", "oozma/kappa")
+        "6/9", "oozma/kappa", "massive tiddies / small tiddies")
 
     private val verb = arrayOf("give", "rate", "r8")
 }

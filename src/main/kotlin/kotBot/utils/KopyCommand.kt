@@ -6,6 +6,7 @@ import dev.minn.jda.ktx.Embed
 import kotBot.Bot
 import kotlinx.coroutines.GlobalScope
 import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.Category
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
 import java.util.*
@@ -59,4 +60,11 @@ fun CommandEvent.replyWithReference(message: String) {
 
 fun CommandEvent.replyWithReference(embed: MessageEmbed) {
     this.channel.sendMessage(embed).reference(this.message).queue()
+}
+
+fun Category.getDescription(): String { //TODO FINISH THIS
+    when(this.name) {
+
+    }
+    return ""
 }

@@ -60,7 +60,7 @@ class OneVOneCmd : KopyCommand() {
         "with a poke", "with a broom", "with their dank memes", "by poking them with a bullet at the speed of sound",
         "using a watering hose", "using a billion airhorns", "by launching 50 nukes taped together at them",
         "using their  m a g n u m   d o n g", "using their dump truck ass", "using their absolutely massive tiddies",
-        "covid-19", "measles", "with boredom", "by taking their phone", "by saying it was their turn on the xbox",
+        "with covid-19", "measles", "with boredom", "by taking their phone", "by saying it was their turn on the xbox",
         "with a null pointer exception"
     )
 }
