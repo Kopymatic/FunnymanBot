@@ -5,10 +5,11 @@ import java.nio.file.Files
 import java.nio.file.Paths
 
 data class Config(
-    val token: String = getFile()?.get(0)!!,
-    val url: String = getFile()?.get(1)!!,
-    val userName: String = getFile()?.get(2)!!,
-    val password: String = getFile()?.get(3)!!,
+    val mainToken: String = getFile()?.get(0)!!,
+    val devToken: String = getFile()?.get(1)!!,
+    val url: String = getFile()?.get(2)!!,
+    val userName: String = getFile()?.get(3)!!,
+    val password: String = getFile()?.get(4)!!,
 )
 
 //TODO make this not a text file

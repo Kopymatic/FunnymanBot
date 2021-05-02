@@ -13,9 +13,11 @@ import java.time.format.DateTimeFormatter
 
 class Reference {
     companion object {
+        const val experimental = false
         const val botName = "KotBot"
-        const val version = "Alpha"
-        val status = Activity.watching(version)
+        const val version = "4"
+        val token = if(!experimental) Config().mainToken else Config().devToken
+        val status = Activity.watching("V$version ${if (experimental) "Experimental" else ""}")
         val dateFormatter: DateTimeFormatter = DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("L/d/yy h:mm a").toFormatter()
 
         //Categories!
@@ -23,10 +25,10 @@ class Reference {
         val funCategory = Command.Category("Fun")
         val utilityCategory = Command.Category("Utility")
         val quickStringCategory = Command.Category("QuickStringCommands")
-        val categories = arrayOf(convenienceCategory, funCategory, utilityCategory, quickStringCategory)
+        val categories = arrayOf(funCategory, convenienceCategory, utilityCategory, quickStringCategory)
 
-        const val mainPrefix = "kk"
-        const val alternativePrefix = "k!"
+        val mainPrefix = if(!experimental) "pp" else "dd"
+        val alternativePrefix = if(!experimental) "p!" else "d!"
         val prefixes = arrayOf(mainPrefix, alternativePrefix)
         val defaultColor: Color = Color(255, 111, 255)
         val rgb: Int = Color(255, 111, 255).rgb
