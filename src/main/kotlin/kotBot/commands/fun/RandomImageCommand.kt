@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.command.CommandEvent
 import dev.minn.jda.ktx.Embed
 import kotBot.utils.*
 import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.Permission
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
 import net.dv8tion.jda.api.exceptions.PermissionException
@@ -44,7 +45,7 @@ abstract class RandomImageCommand : KopyCommand() {
     /**
      * Function to import a new entry
      */
-    protected fun import() {
+    private fun import() {
         val rawText = event.args
         var textTag = "NULL" //sql null
         var linkTag = "NULL" //sql null
@@ -96,8 +97,13 @@ abstract class RandomImageCommand : KopyCommand() {
 
         val rs = kdb.querySQL("SELECT * FROM ${this.dbTableName} WHERE id = $toEdit;")
         if (rs.next()) {
-            if (!isValidGuild(rs.getString("GuildID")) && !(event.guild.id == "654578321543266305" || event.guild.id == "793293945437814797")) {
+            if (!isValidGuild(rs.getString("GuildID"))) {
                 event.reply("This ID isn't available in this guild!")
+                return
+            }
+
+            if (!event.member.permissions.contains(Permission.ADMINISTRATOR) && event.member.id != rs.getString("ImporterID")) {
+                event.replyWithReference("You must either be a server administrator or the original importer to remove this!")
                 return
             }
 
@@ -135,7 +141,7 @@ abstract class RandomImageCommand : KopyCommand() {
         }
     }
 
-    fun delete() {
+    private fun delete() {
         val toDelete = try {
             event.args.split(" ")[1].toInt()
         } catch (e: NumberFormatException) {
@@ -145,8 +151,13 @@ abstract class RandomImageCommand : KopyCommand() {
 
         val rs = kdb.querySQL("SELECT * FROM ${this.dbTableName} WHERE id = $toDelete;")
         if (rs.next()) {
-            if (!isValidGuild(rs.getString("GuildID")) && !(event.guild.id == "654578321543266305" || event.guild.id == "793293945437814797")) {
+            if (!isValidGuild(rs.getString("GuildID"))) {
                 event.reply("This ID isn't available in this guild!")
+                return
+            }
+
+            if (!event.member.permissions.contains(Permission.ADMINISTRATOR) && event.member.id != rs.getString("ImporterID")) {
+                event.replyWithReference("You must either be a server administrator or the original importer to remove this!")
                 return
             }
 
@@ -159,30 +170,39 @@ abstract class RandomImageCommand : KopyCommand() {
         }
     }
 
-    fun send() {
+    private fun send() {
         val ps1 = kdb.connection.prepareStatement("SELECT MAX(id) FROM ${this.dbTableName}")
         val rs1 = ps1.executeQuery()
         rs1.next()
         val dbSize = rs1.getInt(1)
 
         if (event.args.isBlank()) {
-            var validEntry = false
-            var rs: ResultSet
-            do {
-                val rndNum = Random().nextInt(dbSize) + 1
-                val ps = kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE id = $rndNum")
+            var rs: ResultSet? = null
+            var found = false
+            var reallySmallNumber: Double = 1.0 / dbSize
+            while (reallySmallNumber <= 100) {
+                val ps =
+                    kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} TABLESAMPLE BERNOULLI($reallySmallNumber) WHERE GuildID='${event.guild.id}' LIMIT 1;")
                 rs = ps.executeQuery()
 
-                val nextSuccess = rs.next() //true if next was successful
-                if (!nextSuccess) continue
-
-                val guildID = rs.getString("guildID")
-                if (isValidGuild(guildID) || (event.guild.id == "654578321543266305" || event.guild.id == "793293945437814797")) {
-                    validEntry = true
+                if (!rs.next()) {
+                    reallySmallNumber *= 10
+                    continue
+                } else {
+                    found = true
+                    break
                 }
-            } while (!validEntry && !nextSuccess)
-
-            event.reply(makeEmbed(rs))
+            }
+            if (!found) {
+                val ps =
+                    kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} TABLESAMPLE BERNOULLI(100) WHERE GuildID='${event.guild.id}' LIMIT 1;")
+                rs = ps.executeQuery()
+                if (!rs.next()) {
+                    event.replyWithReference("Error: Likely you have nothing imported in this server, or a database error has occurred.")
+                    return
+                }
+            }
+            event.reply(makeEmbed(rs!!))
 
         } else {
             val args = event.args
@@ -204,7 +224,7 @@ abstract class RandomImageCommand : KopyCommand() {
 
                 val guildID = rs.getString("guildID")
                 //Check if the guild is valid, with a couple hardcoded testing guilds
-                if (!isValidGuild(guildID) && !(event.guild.id == "654578321543266305" || event.guild.id == "793293945437814797")) {
+                if (!isValidGuild(guildID)) { //if guild is invalid
                     event.replyWithReference("That ${this.name} entry is not available in this guild!")
                     return
                 }
@@ -212,8 +232,9 @@ abstract class RandomImageCommand : KopyCommand() {
 
             } catch (e: NumberFormatException) {
                 val ps =
-                    kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE TextTag ILIKE ?;") //ILIKE means case insensitive
-                ps.setString(1, "%$args%")
+                    kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE TextTag ILIKE ? AND GuildID=?;") //ILIKE means case insensitive
+                ps.setString(1, "%$args%") //Why do we put percent signs here??
+                ps.setString(2, event.guild.id)
                 val rs = ps.executeQuery()
 
                 if (rs.next()) {
@@ -292,20 +313,44 @@ abstract class RandomImageCommand : KopyCommand() {
         return EmbedBuilder()
             .setTitle("How to use ${this.name}:")
             .setDescription("${this.name} is a simple command with many complex operations you can do. Here's an explanation.")
-            .addField("Getting a random ${this.name} entry:", "This is as simple as running the command with no arguments", false)
-            .addField("Getting a specific ${this.name} entry:", "Run the command with a search or an entry id to get a specific entry" +
-                    "\n**Examples:** `${Reference.mainPrefix}${this.name} (search term)` or `${Reference.mainPrefix}${this.name} (entry id)`", false)
-            .addField("Importing:",
+            .addField(
+                "Getting a random ${this.name} entry:",
+                "This is as simple as running the command with no arguments",
+                false
+            )
+            .addField(
+                "Getting a specific ${this.name} entry:",
+                "Run the command with a search or an entry id to get a specific entry" +
+                        "\n**Examples:** `${Reference.mainPrefix}${this.name} (search term)` or `${Reference.mainPrefix}${this.name} (entry id)`",
+                false
+            )
+            .addField(
+                "Importing:",
                 "To import an image to the database, send the command with an attachment. Optionally, you can supply a description and/or a link." +
-                "\n**Note:** Currently, only **Discord message jump links** are supported. Videos are **not** currently supported.", false)
-            .addField("Editing:",
+                        "\n**Note:** Currently, only **Discord message jump links** are supported. Videos are **not** currently supported.",
+                false
+            )
+            .addField(
+                "Editing:",
                 "If you ever wish to edit the text or link of something you previously imported, " +
                         "send the command the same as you would with importing, but with edit and an id at the beginning and no attachment" +
                         "\n**Example:** `${Reference.mainPrefix}${this.name} edit (entry ID) (new text here) (new link here)`" +
-                        "\n**Note:** Editing an import that has a link with no link will delete that link.", false)
-            .addField("Deleting:", "If you wish to delete something you imported, just run the command with delete and an id" +
-                    "\n**Example**: `${Reference.mainPrefix}${this.name} delete (entry ID)`", false)
+                        "\n**Note:** Editing an import that has a link with no link will delete that link.", false
+            )
+            .addField(
+                "Deleting:",
+                "If you wish to delete something you imported, just run the command with delete and an id" +
+                        "\n**Example**: `${Reference.mainPrefix}${this.name} delete (entry ID)`",
+                false
+            )
             .setColor(Reference.defaultColor)
+    }
+
+    init {
+        botPermissions = arrayOf(
+            Permission.MESSAGE_ADD_REACTION, Permission.MESSAGE_ATTACH_FILES, Permission.MESSAGE_EMBED_LINKS,
+            Permission.MESSAGE_READ, Permission.MESSAGE_WRITE, Permission.VIEW_CHANNEL
+        )
     }
 }
 
