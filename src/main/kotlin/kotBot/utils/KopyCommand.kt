@@ -2,8 +2,6 @@ package kotBot.utils
 
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
-import dev.minn.jda.ktx.Embed
-import kotBot.Bot
 import kotlinx.coroutines.GlobalScope
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Category
