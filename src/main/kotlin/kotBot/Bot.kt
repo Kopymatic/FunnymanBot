@@ -7,11 +7,13 @@ import kotBot.commands.`fun`.NoContextCmd
 import kotBot.commands.`fun`.PeopleCmd
 import kotBot.commands.`fun`.PetCmd
 import kotBot.commands.convenience.ChooseCmd
+import kotBot.commands.convenience.DylanModeCmd
 import kotBot.commands.convenience.HelpCmd
 import kotBot.commands.convenience.PollCmd
 import kotBot.commands.convenience.quickStringCommands.QuickStringCommand
 import kotBot.commands.util.DayTrackerCmd
 import kotBot.commands.util.EmbedCmd
+import kotBot.utils.EveryMessageManager
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
@@ -53,7 +55,8 @@ class Bot {
             QuickStringCommand.Reverser(),
             QuickStringCommand.Say(),
             QuickStringCommand.Alphabetizer(),
-            QuickStringCommand.RandomCaps()
+            QuickStringCommand.RandomCaps(),
+            DylanModeCmd(),
         )
     }
 
@@ -75,7 +78,7 @@ class Bot {
 
         Reference.jda = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS)
             .disableCache(CacheFlag.VOICE_STATE, CacheFlag.EMOTE)
-            .addEventListeners(Reference.waiter, Reference.cmdClient)
+            .addEventListeners(Reference.waiter, Reference.cmdClient, Reference.everyMessageManager)
             .build()
     }
 }
