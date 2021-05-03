@@ -13,10 +13,10 @@ import java.time.format.DateTimeFormatter
 
 class Reference {
     companion object {
-        const val experimental = false
+        const val experimental = true
         const val botName = "KotBot"
-        const val version = "4"
-        val token = if(!experimental) Config().mainToken else Config().devToken
+        const val version = "4.1"
+        val token = if (!experimental) Config().mainToken else Config().devToken
         val status = Activity.watching("V$version ${if (experimental) "Experimental" else ""}")
         val dateFormatter: DateTimeFormatter = DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("L/d/yy h:mm a").toFormatter()
 
@@ -37,5 +37,6 @@ class Reference {
         lateinit var jda: JDA
         val waiter: EventWaiter = EventWaiter()
         lateinit var cmdClient: CommandClient
+        val everyMessageManager = EveryMessageManager()
     }
 }
