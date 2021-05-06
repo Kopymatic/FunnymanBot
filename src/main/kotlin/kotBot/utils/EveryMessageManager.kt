@@ -20,8 +20,8 @@ class EveryMessageManager: ListenerAdapter() {
             ).queue()
         }
 
-        if (event.message.contentRaw.contains("sex")) {
-            val channel = event.jda.textChannels.find { channel -> channel.name == "sex-alarm" }
+        if (event.message.contentRaw.contains("sex", true)) {
+            val channel = event.guild.textChannels.find { channel -> channel.name == "sex-alarm" }
             channel?.sendMessage("${event.member?.effectiveName} has sexed in <#${event.channel.id}>!!!! :flushed:")
                 ?.queue()
         }

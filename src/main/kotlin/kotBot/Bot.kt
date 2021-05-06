@@ -11,8 +11,7 @@ import kotBot.commands.convenience.DylanModeCmd
 import kotBot.commands.convenience.HelpCmd
 import kotBot.commands.convenience.PollCmd
 import kotBot.commands.convenience.quickStringCommands.QuickStringCommand
-import kotBot.commands.util.DayTrackerCmd
-import kotBot.commands.util.EmbedCmd
+import kotBot.commands.util.*
 import kotBot.utils.EveryMessageManager
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.JDABuilder
@@ -57,6 +56,9 @@ class Bot {
             QuickStringCommand.Alphabetizer(),
             QuickStringCommand.RandomCaps(),
             DylanModeCmd(),
+            RestartCmd(),
+            UpdateStatusCmd(),
+            SuggestCmd(),
         )
     }
 
@@ -64,7 +66,7 @@ class Bot {
         //Reference.waiter = EventWaiter()
         val cmdClientBuilder = CommandClientBuilder()
             .setActivity(Reference.status)
-            .setOwnerId("326489320980611075")
+            .setOwnerId(Reference.ownerID)
             .setEmojis("\u2705", "\uD83D\uDE2E", "\uD83D\uDE26")
             .setPrefix(Reference.mainPrefix)
             .setAlternativePrefix(Reference.alternativePrefix)
