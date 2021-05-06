@@ -1,14 +1,14 @@
 package kotBot.commands.util
 
 import com.jagrosh.jdautilities.command.CommandEvent
+import kotBot.main
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
 
-class ShutdownCmd : KopyCommand() {
+class RestartCmd : KopyCommand() {
     init {
-        name = "Shutdown"
-        aliases = arrayOf("kill", "stop")
-        help = "safely shuts off the bot"
+        name = "Restart"
+        help = "Restarts the bot"
         ownerCommand = true
         hidden = true
         guildOnly = false
@@ -16,7 +16,9 @@ class ShutdownCmd : KopyCommand() {
     }
 
     override fun onCommandRun(event: CommandEvent) {
-        event.reactWarning()
+        event.reactSuccess()
+        println("Restarted - This may cause issues")
         event.jda.shutdown()
+        main()
     }
 }

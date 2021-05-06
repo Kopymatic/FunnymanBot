@@ -89,26 +89,11 @@ class HelpCmd : KopyCommand() {
             }
 
             var epSize = 0
-            val ep = EmbedPaginator.Builder()
-                .setFinalAction { m: Message ->
-                    try {
-                        m.clearReactions().queue()
-                    } catch (ex: PermissionException) {
-                        ex.printStackTrace()
-                        m.delete().queue()
-                    }
-                }
-                .allowTextInput(true)
-                .wrapPageEnds(true)
-                .setText(EmbedBuilder.ZERO_WIDTH_SPACE)
-                .setEventWaiter(Reference.waiter)
-                .setTimeout(2, TimeUnit.MINUTES)
-                .waitOnSinglePage(false)
 
             for(currentCommand in matchList) {
-                if(currentCommand.isHidden) continue //If command is hidden then move on
+                if (currentCommand.isHidden && event.author.id != Reference.ownerID) continue //If command is hidden then move on
 
-                if(currentCommand.getAdvancedHelp() != null && !args.contains("debug", false)) {
+                if (currentCommand.getAdvancedHelp() != null && !args.contains("debug", false)) {
                     ep.addItems(currentCommand.getAdvancedHelp()!!.build())
                     epSize++
 
