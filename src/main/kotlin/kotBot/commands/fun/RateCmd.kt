@@ -17,14 +17,6 @@ class RateCmd : KopyCommand() {
 
     override fun onCommandRun(event: CommandEvent) {
         val args = event.args
-        if(args.contains("harley", true) || (event.author.id == "432342730790928384" && args.isBlank()) || args.contains("harlie", true) || args.contains("harle", true) ) {
-            if (args.isEmpty()) {
-                event.reply("I'll ${verb[Random().nextInt(verb.size)]} ${event.member.asMention} ${Random().nextInt(17) + 8}/10")
-            } else {
-                event.reply("I'll ${verb[Random().nextInt(verb.size)]} $args ${Random().nextInt(17) + 8}/10")
-            }
-            return
-        }
         if (args.isEmpty()) {
             event.reply("I'll ${verb[Random().nextInt(verb.size)]} ${event.member.asMention} ${getRating()}")
         } else {
