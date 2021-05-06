@@ -15,10 +15,12 @@ class Reference {
     companion object {
         const val experimental = true
         const val botName = "KotBot"
-        const val version = "4.1"
+        const val version = "4.2"
         val token = if (!experimental) Config().mainToken else Config().devToken
         val status = Activity.watching("V$version ${if (experimental) "Experimental" else ""}")
-        val dateFormatter: DateTimeFormatter = DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("L/d/yy h:mm a").toFormatter()
+        val ownerID = "326489320980611075"
+        val dateFormatter: DateTimeFormatter =
+            DateTimeFormatterBuilder().parseCaseInsensitive().appendPattern("L/d/yy h:mm a").toFormatter()
 
         //Categories!
         val convenienceCategory = Command.Category("Convenience")
