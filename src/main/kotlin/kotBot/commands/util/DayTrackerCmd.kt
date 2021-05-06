@@ -14,14 +14,16 @@ import java.util.concurrent.TimeUnit
 
 class DayTrackerCmd : KopyCommand() {
     init {
-        this.name = "DayLogger"
-        this.aliases = arrayOf("log")
-        this.help = "Keep track of how your days are going! ${Reference.mainPrefix}log"
-        this.guildOnly = false
+        name = "DayLogger"
+        aliases = arrayOf("log")
+        help = "Keep track of how your days are going! ${Reference.mainPrefix}log"
+        guildOnly = false
+        hidden = true
         category = Reference.utilityCategory
         //this.arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
     }
 
+    //TODO finish this
     override fun onCommandRun(event: CommandEvent) {
         GlobalScope.launch { //Start a new coroutine so that this doesn't interrupt the thread
             val time = LocalDateTime.now()
