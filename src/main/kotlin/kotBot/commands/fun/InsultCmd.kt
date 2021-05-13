@@ -20,7 +20,7 @@ class InsultCmd : KopyCommand() {
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
 
-        val insults: List<String> = loadFile("Insults.txt")!!
+        val insults: List<String> = loadFile("resources/Insults.txt")!!
         var insult = insults[Random().nextInt(insults.size)]
         val name: String = if (event.message.mentionedMembers.size > 0) {
             event.message.mentionedMembers[0].effectiveName

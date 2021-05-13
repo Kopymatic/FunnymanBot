@@ -44,12 +44,12 @@ class ChatDeadCmd : KopyCommand() {
 
     companion object {
         private fun wouldYouRather(): String {
-            val wyrQuestions = loadFile("WouldYouRather.txt")!!
+            val wyrQuestions = loadFile("resources/WouldYouRather.txt")!!
             return wyrQuestions[Random().nextInt(wyrQuestions.size)]
         }
 
         private fun generalQuestions(): String {
-            val generalQuestions = loadFile("GeneralQuestions.txt")!!
+            val generalQuestions = loadFile("resources/GeneralQuestions.txt")!!
             return generalQuestions[Random().nextInt(generalQuestions.size)]
         }
 

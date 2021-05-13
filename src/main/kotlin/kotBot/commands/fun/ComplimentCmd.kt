@@ -20,7 +20,7 @@ class ComplimentCmd : KopyCommand() {
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         //command code here
-        val compliments: List<String> = loadFile("Compliments.txt")!!
+        val compliments: List<String> = loadFile("resources/Compliments.txt")!!
         var compliment = compliments[Random().nextInt(compliments.size)]
         val name: String = if (event.message.mentionedMembers.size > 0) {
             event.message.mentionedMembers[0].effectiveName

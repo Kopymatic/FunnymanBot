@@ -21,7 +21,6 @@ abstract class KopyCommand : Command() {
         if (Reference.doTyping) event.channel.sendTyping().queue()
         trackStats(event)
         val guildSettings = GuildSettings(event.guild.id)
-
         GlobalScope.launch {
             onCommandRun(event, guildSettings)
         }
