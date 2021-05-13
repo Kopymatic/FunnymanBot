@@ -1,14 +1,11 @@
 package kotBot.commands.convenience
 
-import kotBot.utils.Reference.Companion.defaultColor
-import kotBot.Bot.Companion.allCommands
-import kotBot.utils.Reference.Companion.mainPrefix
-import kotBot.utils.KopyCommand
 import com.jagrosh.jdautilities.command.CommandEvent
-import kotBot.utils.EmbedPaginator
+import kotBot.Bot.Companion.allCommands
+import kotBot.utils.*
+import kotBot.utils.Reference.Companion.defaultColor
+import kotBot.utils.Reference.Companion.mainPrefix
 import net.dv8tion.jda.api.EmbedBuilder
-import kotBot.utils.Reference
-import kotBot.utils.replyWithReference
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.exceptions.PermissionException
 import java.util.concurrent.TimeUnit
@@ -23,7 +20,7 @@ class HelpCmd : KopyCommand() {
         category = Reference.convenienceCategory
     }
 
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         //make an eb and set it up
         //val eb = EmbedBuilder().setTitle(Reference.botName + " commands:").setColor(defaultColor)
         val commands = allCommands

@@ -1,6 +1,7 @@
 package kotBot.commands.util
 
 import com.jagrosh.jdautilities.command.CommandEvent
+import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.EmbedBuilder
@@ -15,7 +16,7 @@ class EmbedCmd : KopyCommand() {
         category = Reference.utilityCategory
     }
 
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         val eb: EmbedBuilder = EmbedBuilder().setColor(Reference.defaultColor)
         when (event.args.toLowerCase()) {
             "" -> event.reply(getAdvancedHelp().build())

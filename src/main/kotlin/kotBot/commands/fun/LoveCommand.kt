@@ -2,6 +2,7 @@ package kotBot.commands.`fun`
 
 import com.jagrosh.jdautilities.command.CommandEvent
 import dev.minn.jda.ktx.Embed
+import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.entities.Message
@@ -55,7 +56,7 @@ abstract class LoveCommand : KopyCommand() {
      */
     private val sixtyNineGifs = arrayOf("https://media1.tenor.com/images/552432b67854256e7b51ab96c86d8b80/tenor.gif")
 
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         //on command run, if we have mentioned users enter the command
         if (event.message.mentionedMembers.size > 0) {
             val userID: String = event.author.id //Get the IDs we need

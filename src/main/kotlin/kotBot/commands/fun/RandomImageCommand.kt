@@ -32,7 +32,7 @@ abstract class RandomImageCommand : KopyCommand() {
     /**
      * Default behavior - can be overridden
      */
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         this.event = event
         when {
             event.message.hasAttachments() -> import()

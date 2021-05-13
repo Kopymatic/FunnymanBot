@@ -1,6 +1,7 @@
 package kotBot.commands.convenience
 
 import com.jagrosh.jdautilities.command.CommandEvent
+import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.entities.Message
@@ -13,7 +14,7 @@ class PollCmd : KopyCommand() {
         category = Reference.convenienceCategory
     }
 
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         if (event.args.equals("", ignoreCase = true)) {
             event.reply("You must provide arguments!")
         } else {

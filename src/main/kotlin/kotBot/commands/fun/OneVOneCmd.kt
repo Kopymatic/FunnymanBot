@@ -1,8 +1,9 @@
 package kotBot.commands.`fun`
 
-import kotBot.utils.KopyCommand
 import com.jagrosh.jdautilities.command.CommandEvent
 import dev.minn.jda.ktx.Embed
+import kotBot.utils.GuildSettings
+import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
 import java.util.*
 
@@ -16,7 +17,7 @@ class OneVOneCmd : KopyCommand() {
         category = Reference.funCategory
     }
 
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         val args = event.args.split(" ").toTypedArray()
         var first: String
         var second: String

@@ -1,6 +1,7 @@
 package kotBot.commands.util
 
 import com.jagrosh.jdautilities.command.CommandEvent
+import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.entities.Activity
@@ -17,7 +18,7 @@ class UpdateStatusCmd : KopyCommand() {
         category = Reference.utilityCategory
     }
 
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         val args = event.args
         try {
             event.jda.presence.activity = when {

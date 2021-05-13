@@ -1,6 +1,7 @@
 package kotBot.commands.`fun`
 
 import com.jagrosh.jdautilities.command.CommandEvent
+import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
 import java.util.*
@@ -15,7 +16,7 @@ class RateCmd : KopyCommand() {
         category = Reference.funCategory
     }
 
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         val args = event.args
         if (args.isEmpty()) {
             event.reply("I'll ${verb[Random().nextInt(verb.size)]} ${event.member.asMention} ${getRating()}")
