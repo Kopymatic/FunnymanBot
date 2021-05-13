@@ -43,8 +43,10 @@ class OneVOneCmd : KopyCommand() {
         }
         event.reply(Embed {
             title = titles[(Random().nextInt(titles.size))]
-            description = "$first **${actions[Random().nextInt(actions.size)]}** $second ${descriptors[Random().nextInt(descriptors.size)]}"
-            color = Reference.rgb
+            description = "$first **${actions[Random().nextInt(actions.size)]}** $second ${
+                descriptors[Random().nextInt(descriptors.size)]
+            }"
+            color = guildSettings.rgb
         })
     }
 

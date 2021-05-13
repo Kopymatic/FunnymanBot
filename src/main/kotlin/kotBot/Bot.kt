@@ -56,6 +56,7 @@ class Bot {
             SuggestCmd(),
             TestCmd(),
             Reference.ConfigCmd(),
+            GuildSettingsCmd(),
         )
     }
 

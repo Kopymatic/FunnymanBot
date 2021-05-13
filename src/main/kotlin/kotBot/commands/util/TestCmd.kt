@@ -4,8 +4,6 @@ import com.jagrosh.jdautilities.command.CommandEvent
 import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
-import net.dv8tion.jda.api.entities.PrivateChannel
-import java.util.*
 
 class TestCmd : KopyCommand() {
     init {
@@ -13,23 +11,24 @@ class TestCmd : KopyCommand() {
         help = "for testing"
         ownerCommand = true
         hidden = true
-        cooldown = 10
         category = Reference.utilityCategory
     }
 
-    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
-        //GlobalScope.launch {
-        for (i in 0..5) {
-            var inviteUrl: String
-            event.guild.defaultChannel!!.createInvite().setMaxAge(0).setMaxUses(Random().nextInt(100)).queue { invite ->
-                inviteUrl = invite.url
-                event.author.openPrivateChannel().queue { dm: PrivateChannel ->
-                    dm.sendMessage(inviteUrl).queue()
-                    println(inviteUrl)
-                }
-            }
+    override fun execute(event: CommandEvent?) {
+        val guilds = Reference.jda.guilds
+        for (guild in guilds) {
+            val ps = Reference.connection.prepareStatement(
+                """
+            INSERT INTO GuildSettings
+            VALUES(?, DEFAULT, NULL, DEFAULT);
+            """.trimIndent()
+            )
+            ps.setString(1, guild.id) //Set the first ? in the prepared statement to guildID
+            ps.executeUpdate()
         }
-        event.reactSuccess()
-        //}
+    }
+
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
+        TODO("Not yet implemented")
     }
 }

@@ -9,8 +9,9 @@ import net.dv8tion.jda.api.entities.Category
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
 
-abstract class KopyCommand: Command() {
+abstract class KopyCommand : Command() {
     val kdb = Reference.kdb
+
     /**
      * -- DO NOT OVERRIDE --
      * Use onCommandRun instead
@@ -20,6 +21,7 @@ abstract class KopyCommand: Command() {
         if (Reference.doTyping) event.channel.sendTyping().queue()
         trackStats(event)
         val guildSettings = GuildSettings(event.guild.id)
+
         GlobalScope.launch {
             onCommandRun(event, guildSettings)
         }
@@ -63,7 +65,7 @@ fun CommandEvent.replyWithReference(embed: MessageEmbed) {
 }
 
 fun Category.getDescription(): String { //TODO FINISH THIS
-    when(this.name) {
+    when (this.name) {
 
     }
     return ""

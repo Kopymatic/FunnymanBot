@@ -62,7 +62,6 @@ class Reference {
                     ```kotlin
                     doTyping: Boolean = $doTyping
                     version: String = $version
-                    defaultColor: Color (rgb format) = ${defaultColor.red}, ${defaultColor.green}, ${defaultColor.blue}
                     ```
                     Change them with `${mainPrefix}${this.name} [variable] = [assignment]`
                 """.trimIndent()
@@ -75,11 +74,6 @@ class Reference {
                 when (args[0].trim()) {
                     "doTyping" -> doTyping = args[1].toBoolean()
                     "version" -> version = args[1]
-                    "defaultColor" -> {
-                        val rgb = args[1].split(",")
-                        defaultColor = Color(rgb[0].trim().toInt(), rgb[1].trim().toInt(), rgb[2].trim().toInt())
-                        Reference.rgb = defaultColor.rgb
-                    }
                     else -> event.reply("Variable not found")
                 }
                 event.reactSuccess()

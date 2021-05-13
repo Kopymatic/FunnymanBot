@@ -88,11 +88,11 @@ abstract class LoveCommand : KopyCommand() {
 
             event.channel.sendMessage(
                 Embed(
-                    color = Reference.rgb,
+                    color = guildSettings.rgb,
                     title = "${event.member.effectiveName} $embedTitleText ${event.message.mentionedMembers[0].effectiveName}",
                     image = gif,
                     footerText = "That's $timesPerformed $embedFooterText now!"
-                    )
+                )
             ).queue { message: Message ->
                 if(Random().nextInt(100) < reactionPercent) {
                     message.addReaction(

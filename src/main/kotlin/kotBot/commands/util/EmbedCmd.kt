@@ -17,7 +17,7 @@ class EmbedCmd : KopyCommand() {
     }
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
-        val eb: EmbedBuilder = EmbedBuilder().setColor(Reference.defaultColor)
+        val eb: EmbedBuilder = EmbedBuilder().setColor(guildSettings.defaultColor)
         when (event.args.toLowerCase()) {
             "" -> event.reply(getAdvancedHelp().build())
             "example" -> event.reply(
@@ -81,7 +81,8 @@ class EmbedCmd : KopyCommand() {
     }
 
         override fun getAdvancedHelp(): EmbedBuilder {
-            val eb: EmbedBuilder = EmbedBuilder().setColor(Reference.defaultColor)
+
+            val eb = EmbedBuilder()
             eb.setTitle("How to make an embed with ${Reference.mainPrefix}embed")
             eb.setDescription(
                 "Embeds are really cool and good at getting information across. This command allows you to construct embeds "

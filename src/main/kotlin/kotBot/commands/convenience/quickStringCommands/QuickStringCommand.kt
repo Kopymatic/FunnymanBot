@@ -31,7 +31,7 @@ abstract class QuickStringCommand: KopyCommand() {
         if (event.args.contains("anon")) {
             if (event.args.contains("embed") && isEmbeddable) {
                 val eb = EmbedBuilder()
-                eb.setColor(Reference.defaultColor)
+                eb.setColor(guildSettings.defaultColor)
 
                 val quote = formatText(event.args.replace("embed", "").replace("anon", "").trim())
 
@@ -47,7 +47,7 @@ abstract class QuickStringCommand: KopyCommand() {
 
         } else if (event.args.contains("embed") && isEmbeddable) {
             val eb = EmbedBuilder()
-            eb.setColor(Reference.defaultColor)
+            eb.setColor(guildSettings.defaultColor)
             if (showUserByDefault) eb.setFooter(event.author.name, event.author.effectiveAvatarUrl)
 
             val quote = formatText(event.args.replace("embed", "").trim())

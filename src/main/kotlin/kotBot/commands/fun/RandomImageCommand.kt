@@ -28,12 +28,14 @@ abstract class RandomImageCommand : KopyCommand() {
      * The commandevent to use
      */
     protected lateinit var event: CommandEvent
+    private lateinit var guildSettings: GuildSettings
 
     /**
      * Default behavior - can be overridden
      */
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         this.event = event
+        this.guildSettings = guildSettings
         when {
             event.message.hasAttachments() -> import()
             event.args.toLowerCase().trim().startsWith("edit") -> edit()
@@ -305,7 +307,7 @@ abstract class RandomImageCommand : KopyCommand() {
             description = descText,
             image = image,
             footerText = footer,
-            color = Reference.rgb
+            color = guildSettings.rgb
         ))
     }
 
@@ -343,7 +345,6 @@ abstract class RandomImageCommand : KopyCommand() {
                         "\n**Example**: `${Reference.mainPrefix}${this.name} delete (entry ID)`",
                 false
             )
-            .setColor(Reference.defaultColor)
     }
 
     init {
