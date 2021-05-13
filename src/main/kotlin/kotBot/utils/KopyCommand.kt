@@ -3,11 +3,11 @@ package kotBot.utils
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Category
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
-import java.util.*
 
 abstract class KopyCommand: Command() {
     val kdb = Reference.kdb
@@ -16,17 +16,19 @@ abstract class KopyCommand: Command() {
      * Use onCommandRun instead
      */
     override fun execute(event: CommandEvent?) {
-        if(event == null) return
+        if (event == null) return
+        if (Reference.doTyping) event.channel.sendTyping().queue()
         trackStats(event)
-        GlobalScope.run {
-            onCommandRun(event)
+        val guildSettings = GuildSettings(event.guild.id)
+        GlobalScope.launch {
+            onCommandRun(event, guildSettings)
         }
     }
 
     /**
      * KopyCommand's implementation of execute, except event is nonnull and stats are tracked
      */
-    abstract fun onCommandRun(event: CommandEvent)
+    abstract suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings)
 
     /*
     For tracking bot statistics

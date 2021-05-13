@@ -2,17 +2,12 @@ package kotBot
 
 import com.jagrosh.jdautilities.command.CommandClientBuilder
 import kotBot.commands.`fun`.*
-import kotBot.commands.`fun`.MemeCmd
-import kotBot.commands.`fun`.NoContextCmd
-import kotBot.commands.`fun`.PeopleCmd
-import kotBot.commands.`fun`.PetCmd
 import kotBot.commands.convenience.ChooseCmd
 import kotBot.commands.convenience.DylanModeCmd
 import kotBot.commands.convenience.HelpCmd
 import kotBot.commands.convenience.PollCmd
 import kotBot.commands.convenience.quickStringCommands.QuickStringCommand
 import kotBot.commands.util.*
-import kotBot.utils.ConfigVar
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent

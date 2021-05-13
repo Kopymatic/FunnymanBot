@@ -1,9 +1,10 @@
 package kotBot.utils
 
+import net.dv8tion.jda.api.events.guild.GuildJoinEvent
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
-class EveryMessageManager: ListenerAdapter() {
+class EverythingListener : ListenerAdapter() {
     var dylanMode = false
 
     override fun onMessageReceived(event: MessageReceivedEvent) {
@@ -25,5 +26,16 @@ class EveryMessageManager: ListenerAdapter() {
             channel?.sendMessage("${event.member?.effectiveName} has sexed in <#${event.channel.id}>!!!! :flushed:")
                 ?.queue()
         }
+    }
+
+    override fun onGuildJoin(event: GuildJoinEvent) {
+        val ps = Reference.connection.prepareStatement(
+            """
+            INSERT INTO GuildSettings
+            VALUES(?, DEFAULT, NULL, DEFAULT);
+            """.trimIndent()
+        )
+        ps.setString(1, event.guild.id) //Set the first ? in the prepared statement to guildID
+        ps.executeUpdate()
     }
 }
