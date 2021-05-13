@@ -12,7 +12,7 @@ import kotBot.commands.convenience.HelpCmd
 import kotBot.commands.convenience.PollCmd
 import kotBot.commands.convenience.quickStringCommands.QuickStringCommand
 import kotBot.commands.util.*
-import kotBot.utils.EveryMessageManager
+import kotBot.utils.ConfigVar
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
@@ -59,6 +59,8 @@ class Bot {
             RestartCmd(),
             UpdateStatusCmd(),
             SuggestCmd(),
+            TestCmd(),
+            Reference.ConfigCmd(),
         )
     }
 
@@ -78,7 +80,8 @@ class Bot {
 
         Reference.cmdClient = cmdClientBuilder.build()
 
-        Reference.jda = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS)
+        Reference.jda = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES,
+            GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.GUILD_MESSAGE_TYPING)
             .disableCache(CacheFlag.VOICE_STATE, CacheFlag.EMOTE)
             .addEventListeners(Reference.waiter, Reference.cmdClient, Reference.everyMessageManager)
             .build()
