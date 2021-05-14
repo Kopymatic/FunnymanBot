@@ -8,7 +8,7 @@ import kotBot.utils.Reference
 class ShutdownCmd : KopyCommand() {
     init {
         name = "Shutdown"
-        aliases = arrayOf("kill", "stop")
+        aliases = arrayOf("stop")
         help = "safely shuts off the bot"
         ownerCommand = true
         hidden = true

@@ -24,7 +24,9 @@ class GuildSettingsCmd : KopyCommand() {
                     Current variables:
                     ```kotlin
                     defaultColor: Color (rgb format) = ${guildSettings.defaultColor.red}, ${guildSettings.defaultColor.green}, ${guildSettings.defaultColor.blue}
-                    partneredGuilds: List (comma seperated) = ${guildSettings.partneredGuilds}
+                    partneredGuilds: List (comma seperated) = ${
+                    guildSettings.partneredGuilds.toString().removePrefix("[").removeSuffix("]")
+                }
                     doSexAlarm: Boolean = ${guildSettings.doSexAlarm}
                     ```
                     Change them with `${Reference.mainPrefix}${this.name} [variable] = [assignment]`

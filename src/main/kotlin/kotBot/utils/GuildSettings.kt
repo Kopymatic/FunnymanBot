@@ -59,7 +59,7 @@ data class GuildSettings(
             """.trimIndent()
         )
         ps.setInt(1, defaultColor.rgb)
-        ps.setString(2, partneredGuilds.toString())
+        ps.setString(2, partneredGuilds.toString().removePrefix("[").removeSuffix("]"))
         ps.setBoolean(3, doSexAlarm)
 
         ps.setString(4, guildID) //REMEMBER TO UPDATE THIS INDEX WHEN ADDING NEW VARIABLES!!!!!!!!!!!!!!
