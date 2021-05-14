@@ -11,14 +11,14 @@ import net.dv8tion.jda.api.entities.MessageEmbed
 
 abstract class KopyCommand : Command() {
     val kdb = Reference.kdb
-
+    var doTyping = true
     /**
      * -- DO NOT OVERRIDE --
      * Use onCommandRun instead
      */
     override fun execute(event: CommandEvent?) {
         if (event == null) return
-        if (Reference.doTyping) event.channel.sendTyping().queue()
+        if (Reference.doTyping && this.doTyping) event.channel.sendTyping().queue()
         trackStats(event)
         val guildSettings = GuildSettings(event.guild.id)
         GlobalScope.launch {

@@ -57,6 +57,7 @@ class Bot {
             TestCmd(),
             Reference.ConfigCmd(),
             GuildSettingsCmd(),
+            ShutdownCmd()
         )
     }
 

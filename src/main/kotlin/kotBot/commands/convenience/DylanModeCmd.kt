@@ -16,6 +16,7 @@ class DylanModeCmd : KopyCommand() {
             Permission.ADMINISTRATOR
         )
         category = Reference.convenienceCategory
+        doTyping = false
     }
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {

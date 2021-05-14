@@ -16,6 +16,7 @@ class UpdateStatusCmd : KopyCommand() {
         hidden = true
         guildOnly = false
         category = Reference.utilityCategory
+        doTyping = false
     }
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
