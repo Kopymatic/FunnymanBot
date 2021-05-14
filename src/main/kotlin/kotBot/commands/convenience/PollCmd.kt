@@ -4,40 +4,40 @@ import com.jagrosh.jdautilities.command.CommandEvent
 import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
-import net.dv8tion.jda.api.entities.Message
 
 class PollCmd : KopyCommand() {
     init {
-        this.name = "Poll"
-        this.help = "Creates a poll with reactions"
-        this.arguments = "[# of reacts (Default 2, max 9)], [Message]"
+        name = "Poll"
+        help = "Creates a poll with reactions"
+        arguments = "[# of reacts (Default 2, max 10)], [Message]"
         category = Reference.convenienceCategory
+        doTyping = false
     }
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
-        if (event.args.equals("", ignoreCase = true)) {
-            event.reply("You must provide arguments!")
-        } else {
-            val args: Array<String> = event.args.split(" ").toTypedArray()
-            val message: Message = event.message
-            try {
-                val pollOptions = args[0].toInt()
-                if (pollOptions in 3..9) {
-                    for (i in 1..pollOptions) {
-                        message.addReaction("U+003" + i + "U+FE0F U+20E3").queue()
-                    }
-                } else {
-                    when (pollOptions) {
-                        1 -> message.addReaction("U+1F44D").queue() //thumbs up
-                        2 -> {
-                            message.addReaction("U+1F44D").queue() //thumbs up
-                            message.addReaction("U+1F44E").queue() //thumbs down
-                        }
-                    }
+        val args = event.args
+        val splitArgs = args.split(" ")
+        try {
+            val reactAmount = splitArgs[0].toInt()
+            if (reactAmount == 1) {
+                event.message.addReaction("U+1F44D").queue() //thumbs up
+                return
+            }
+            for (i in 1..reactAmount) {
+                if (i == 10) {
+                    event.message.addReaction("\uD83D\uDD1F")
+                        .queue() //10 -- unicode got from https://www.iemoji.com/view/emoji/777/symbols/keycap-10
+                    break
                 }
-            } catch (e: NumberFormatException) { // if the first arg can't be parsed to an int, run this.
-                message.addReaction("U+1F44D").queue() //thumbs up
-                message.addReaction("U+1F44E").queue() //thumbs down
+                event.message.addReaction("U+003$i U+FE0F U+20E3").queue()
+            }
+        } catch (e: Exception) {
+            when (e) { //Kotlin doesn't have multi catch blocks :(
+                is NumberFormatException, is IndexOutOfBoundsException -> {
+                    event.message.addReaction("U+1F44D").queue() //thumbs up
+                    event.message.addReaction("U+1F44E").queue() //thumbs down
+                }
+                else -> throw e
             }
         }
     }
