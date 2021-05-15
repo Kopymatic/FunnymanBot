@@ -55,12 +55,12 @@ fun Message.hasAttachments(): Boolean {
     return this.attachments.size > 0
 }
 
-fun CommandEvent.replyWithReference(message: String) {
-    this.channel.sendMessage(message).reference(this.message).queue()
+fun CommandEvent.replyWithReference(message: String, mention: Boolean = false) {
+    this.channel.sendMessage(message).reference(this.message).mentionRepliedUser(mention).queue()
 }
 
-fun CommandEvent.replyWithReference(embed: MessageEmbed) {
-    this.channel.sendMessage(embed).reference(this.message).queue()
+fun CommandEvent.replyWithReference(embed: MessageEmbed, mention: Boolean = false) {
+    this.channel.sendMessage(embed).reference(this.message).mentionRepliedUser(mention).queue()
 }
 
 fun Category.getDescription(): String { //TODO FINISH THIS
