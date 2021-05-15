@@ -88,7 +88,7 @@ fun main() {
                guildID TEXT PRIMARY KEY,
                defaultColor INT NOT NULL DEFAULT -36865,
                partneredGuilds TEXT,
-               doSexAlarm BOOLEAN NOT NULL DEFAULT true
+               doSexAlarm BOOLEAN NOT NULL DEFAULT true,
                dylanMode boolean NOT NULL DEFAULT false
             );
         """.trimIndent()
