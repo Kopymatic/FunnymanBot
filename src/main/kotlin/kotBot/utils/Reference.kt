@@ -41,6 +41,8 @@ class Reference {
         val waiter: EventWaiter = EventWaiter()
         lateinit var cmdClient: CommandClient
         val everyMessageManager = EverythingListener()
+
+        var emergencyDisable = false //Disables EverythingListener
     }
 
     class ConfigCmd : KopyCommand() {
@@ -62,6 +64,7 @@ class Reference {
                     ```kotlin
                     doTyping: Boolean = $doTyping
                     version: String = $version
+                    emergencyDisable: Boolean = $emergencyDisable
                     ```
                     Change them with `${mainPrefix}${this.name} [variable] = [assignment]`
                 """.trimIndent()
@@ -74,11 +77,11 @@ class Reference {
                 when (args[0].trim()) {
                     "doTyping" -> doTyping = args[1].toBoolean()
                     "version" -> version = args[1]
+                    "emergencyDisable" -> emergencyDisable = args[1].toBoolean()
                     else -> event.reply("Variable not found")
                 }
                 event.reactSuccess()
             }
         }
     }
-
 }
