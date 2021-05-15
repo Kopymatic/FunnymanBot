@@ -33,7 +33,7 @@ class SuggestCmd : KopyCommand() {
 
         suggestChannel?.sendMessage(Embed {
             title = "Suggestion from ${event.author.asTag}"
-            description = event.args
+            description = "[${Reference.version}${if (Reference.experimental) " Experimental " else " "}]${event.args}"
         })?.queue { message: Message ->
             message.addReaction("✅").queue()
             message.addReaction("❌").queue()
@@ -56,7 +56,7 @@ class SuggestCmd : KopyCommand() {
                         }
                         "❌" -> {
                             reactedMessage.delete().reason("Rejected").queue()
-                            event.replyWithReference("Your suggestion was denied")
+                            event.replyWithReference("Your suggestion was denied", true)
                         }
                     }
                 }
