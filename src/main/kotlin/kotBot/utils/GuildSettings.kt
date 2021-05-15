@@ -8,8 +8,9 @@ import java.sql.ResultSet
 data class GuildSettings(
     var guildID: String,
     var defaultColor: Color,
-    var partneredGuilds: List<String>?,
+    var partneredGuilds: MutableList<String>?,
     var doSexAlarm: Boolean,
+    var dylanMode: Boolean,
 ) {
     val rgb = defaultColor.rgb
 
@@ -19,8 +20,9 @@ data class GuildSettings(
     constructor(resultSet: ResultSet) : this(
         resultSet.getString("guildID"),
         Color(resultSet.getInt("defaultColor")),
-        resultSet.getString("partneredGuilds")?.split(","),
-        resultSet.getBoolean("doSexAlarm")
+        resultSet.getString("partneredGuilds")?.split(",")?.toMutableList(),
+        resultSet.getBoolean("doSexAlarm"),
+        resultSet.getBoolean("dylanMode")
     )
 
     constructor(guildID: String) : this(
@@ -28,17 +30,16 @@ data class GuildSettings(
             Reference.connection.prepareStatement(
                 """
                 SELECT * FROM GuildSettings 
-                WHERE guildID = ?;
+                WHERE guildID = '$guildID';
                 """.trimIndent()
-            ).setStringAndReturnThis(1, guildID).executeQueryAndNext()
+            ).executeQueryAndNext()
         } catch (e: PSQLException) {
             val ps = Reference.connection.prepareStatement(
                 """
                     INSERT INTO GuildSettings
-                    VALUES(?, DEFAULT, NULL, DEFAULT);
+                    VALUES('$guildID', DEFAULT, '$guildID', DEFAULT);
                     """.trimIndent()
             )
-            ps.setString(1, guildID)
             ps.executeUpdate()
 
             Reference.connection.prepareStatement(
@@ -54,15 +55,15 @@ data class GuildSettings(
         val ps = Reference.connection.prepareStatement(
             """
                 UPDATE GuildSettings
-                SET defaultColor = ?, partneredGuilds = ?, doSexAlarm = ?
-                WHERE guildID = ?;
+                SET defaultColor = ?, partneredGuilds = ?, doSexAlarm = ?, dylanMode = ?
+                WHERE guildID = '$guildID';
             """.trimIndent()
         )
         ps.setInt(1, defaultColor.rgb)
         ps.setString(2, partneredGuilds.toString().removePrefix("[").removeSuffix("]"))
         ps.setBoolean(3, doSexAlarm)
+        ps.setBoolean(4, dylanMode)
 
-        ps.setString(4, guildID) //REMEMBER TO UPDATE THIS INDEX WHEN ADDING NEW VARIABLES!!!!!!!!!!!!!!
         ps.executeUpdate()
     }
 }

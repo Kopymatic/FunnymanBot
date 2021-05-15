@@ -182,9 +182,15 @@ abstract class RandomImageCommand : KopyCommand() {
             var rs: ResultSet? = null
             var found = false
             var reallySmallNumber: Double = 1.0 / dbSize
+
+            var whereStatement = "WHERE GuildID='${event.guild.id}'"
+            for (partner in guildSettings.partneredGuilds!!) {
+                whereStatement += " OR GuildID='$partner'"
+            }
+
             while (reallySmallNumber <= 100) {
                 val ps =
-                    kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} TABLESAMPLE BERNOULLI($reallySmallNumber) WHERE GuildID='${event.guild.id}' LIMIT 1;")
+                    kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} TABLESAMPLE BERNOULLI($reallySmallNumber) $whereStatement LIMIT 1;")
                 rs = ps.executeQuery()
 
                 if (!rs.next()) {
@@ -217,7 +223,7 @@ abstract class RandomImageCommand : KopyCommand() {
                     event.replyWithReference(
                         Embed(
                             description = "This entry is unavailable! Its likely it was deleted or is out of the database range",
-                            footerText = "The highest ID is $dbSize, but some may be missing due to deleting",
+                            footerText = "The highest ID is $dbSize, but some may be unavailable due to deleting or being in different guilds",
                             color = Color.red.rgb
                         )
                     )
@@ -226,17 +232,22 @@ abstract class RandomImageCommand : KopyCommand() {
 
                 val guildID = rs.getString("guildID")
                 //Check if the guild is valid, with a couple hardcoded testing guilds
-                if (!isValidGuild(guildID)) { //if guild is invalid
+                if (!guildSettings.partneredGuilds!!.contains(guildID)) { //if guild is invalid
                     event.replyWithReference("That ${this.name} entry is not available in this guild!")
                     return
                 }
                 event.reply(makeEmbed(rs))
 
             } catch (e: NumberFormatException) {
+                var whereStatement = "AND (GuildID='${event.guild.id}'"
+                for (partner in guildSettings.partneredGuilds!!) {
+                    whereStatement += " OR GuildID='$partner'"
+                }
+                whereStatement += ")"
+
                 val ps =
-                    kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE TextTag ILIKE ? AND GuildID=?;") //ILIKE means case insensitive
+                    kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE TextTag ILIKE ? $whereStatement;") //ILIKE means case insensitive
                 ps.setString(1, "%$args%") //Why do we put percent signs here??
-                ps.setString(2, event.guild.id)
                 val rs = ps.executeQuery()
 
                 if (rs.next()) {

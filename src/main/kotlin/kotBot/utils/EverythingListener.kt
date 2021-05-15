@@ -4,12 +4,13 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
 class EverythingListener : ListenerAdapter() {
-    var dylanMode = false
 
     override fun onMessageReceived(event: MessageReceivedEvent) {
         if (event.author.isBot) return
+        if (Reference.emergencyDisable) return
+        val guildSettings = GuildSettings(event.guild.id)
 
-        if (dylanMode && event.message.referencedMessage != null) {
+        if (guildSettings.dylanMode && event.message.referencedMessage != null) {
             val referencedMessage = event.message.referencedMessage!!
             event.channel.sendMessage(
                 "**${event.member?.effectiveName}** replied to **${referencedMessage.member?.effectiveName}**\n" +
@@ -20,10 +21,12 @@ class EverythingListener : ListenerAdapter() {
             ).queue()
         }
 
-        if (event.message.contentRaw.contains("sex", true)) {
-            val channel = event.guild.textChannels.find { channel -> channel.name == "sex-alarm" }
-            channel?.sendMessage("${event.member?.effectiveName} has sexed in <#${event.channel.id}>!!!! :flushed:")
-                ?.queue()
+        if (guildSettings.doSexAlarm) {
+            if (event.message.contentRaw.contains("sex", true)) {
+                val channel = event.guild.textChannels.find { channel -> channel.name == "sex-alarm" }
+                channel?.sendMessage("${event.member?.effectiveName} has sexed in <#${event.channel.id}>!!!! :flushed:")
+                    ?.queue()
+            }
         }
     }
 

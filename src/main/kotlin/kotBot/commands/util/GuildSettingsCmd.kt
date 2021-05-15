@@ -24,10 +24,8 @@ class GuildSettingsCmd : KopyCommand() {
                     Current variables:
                     ```kotlin
                     defaultColor: Color (rgb format) = ${guildSettings.defaultColor.red}, ${guildSettings.defaultColor.green}, ${guildSettings.defaultColor.blue}
-                    partneredGuilds: List (comma seperated) = ${
-                    guildSettings.partneredGuilds.toString().removePrefix("[").removeSuffix("]")
-                }
                     doSexAlarm: Boolean = ${guildSettings.doSexAlarm}
+                    dylanMode: Boolean = ${guildSettings.dylanMode}
                     ```
                     Change them with `${Reference.mainPrefix}${this.name} [variable] = [assignment]`
                 """.trimIndent()
@@ -47,24 +45,12 @@ class GuildSettingsCmd : KopyCommand() {
                         event.replyWithReference("Invalid color! Remember that colors need to be in RGB format (like `255, 111, 255`) and the maximum value is 255")
                         return
                     }
-
-                }
-                "partneredguilds" -> {
-                    val guilds = args[1].split(",")
-                    for (guild in guilds) {
-                        if (guild.trim().length != 18) {
-                            event.reply("Invalid guild id!")
-                            return
-                        }
-                    }
-                    guildSettings.partneredGuilds = guilds
                 }
                 "dosexalarm" -> {
-                    //try {
                     guildSettings.doSexAlarm = args[1].toBoolean()
-                    //} catch () {
-
-                    //}
+                }
+                "dylanmode" -> {
+                    guildSettings.dylanMode = args[1].toBoolean()
                 }
                 else -> event.reply("Variable not found")
             }
