@@ -81,6 +81,18 @@ fun main() {
             );
         """.trimIndent()
     )
+
+    create( //Create guildSettings //DEFAULTCOLOR IS USING COLOR.RGB
+        """
+            CREATE TABLE GuildSettings (
+               guildID TEXT PRIMARY KEY,
+               defaultColor INT NOT NULL DEFAULT -36865,
+               partneredGuilds TEXT,
+               doSexAlarm BOOLEAN NOT NULL DEFAULT true
+               dylanMode boolean NOT NULL DEFAULT false
+            );
+        """.trimIndent()
+    )
 }
 
 fun create(sql: String) {

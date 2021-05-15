@@ -1,8 +1,8 @@
 package kotBot.commands.convenience
 
-import kotBot.utils.KopyCommand
 import com.jagrosh.jdautilities.command.CommandEvent
-import com.jagrosh.jdautilities.doc.standard.CommandInfo
+import kotBot.utils.GuildSettings
+import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
 import java.util.*
 
@@ -16,7 +16,7 @@ class ChooseCmd : KopyCommand() {
         category = Reference.convenienceCategory
     }
 
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         //Get the options then split and pick one to send
         val args = event.args.split("/").toTypedArray()
         val chosenOne = args[Random().nextInt(args.size)].trim()

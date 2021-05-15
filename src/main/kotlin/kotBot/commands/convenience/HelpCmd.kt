@@ -1,14 +1,10 @@
 package kotBot.commands.convenience
 
-import kotBot.utils.Reference.Companion.defaultColor
-import kotBot.Bot.Companion.allCommands
-import kotBot.utils.Reference.Companion.mainPrefix
-import kotBot.utils.KopyCommand
 import com.jagrosh.jdautilities.command.CommandEvent
-import kotBot.utils.EmbedPaginator
+import kotBot.Bot.Companion.allCommands
+import kotBot.utils.*
+import kotBot.utils.Reference.Companion.mainPrefix
 import net.dv8tion.jda.api.EmbedBuilder
-import kotBot.utils.Reference
-import kotBot.utils.replyWithReference
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.exceptions.PermissionException
 import java.util.concurrent.TimeUnit
@@ -23,7 +19,7 @@ class HelpCmd : KopyCommand() {
         category = Reference.convenienceCategory
     }
 
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         //make an eb and set it up
         //val eb = EmbedBuilder().setTitle(Reference.botName + " commands:").setColor(defaultColor)
         val commands = allCommands
@@ -48,7 +44,7 @@ class HelpCmd : KopyCommand() {
         val categoryEmbeds: Array<EmbedBuilder?> = arrayOfNulls(categories.size)
         for (i in categories.indices) {
             val eb = EmbedBuilder()
-                .setColor(defaultColor)
+                .setColor(guildSettings.defaultColor)
                 .setTitle(categories[i].name)
                 .setFooter("Use " + mainPrefix + "help [command] to get additional info for commands.")
             categoryEmbeds[i] = eb
@@ -94,11 +90,11 @@ class HelpCmd : KopyCommand() {
                 if (currentCommand.isHidden && event.author.id != Reference.ownerID) continue //If command is hidden then move on
 
                 if (currentCommand.getAdvancedHelp() != null && !args.contains("debug", false)) {
-                    ep.addItems(currentCommand.getAdvancedHelp()!!.build())
+                    ep.addItems(currentCommand.getAdvancedHelp()!!.setColor(guildSettings.defaultColor).build())
                     epSize++
 
                 } else {
-                    val eb = EmbedBuilder().setColor(defaultColor).setTitle("${currentCommand.name} help")
+                    val eb = EmbedBuilder().setColor(guildSettings.defaultColor).setTitle("${currentCommand.name} help")
                         .setFooter("Use " + mainPrefix + "help [command] to get additional info for other commands.")
 
                     if (currentCommand.arguments == null) {

@@ -1,6 +1,7 @@
 package kotBot.commands.`fun`
 
 import com.jagrosh.jdautilities.command.CommandEvent
+import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
 import java.io.IOException
@@ -18,7 +19,7 @@ class ChatDeadCmd : KopyCommand() {
         category = Reference.funCategory
     }
 
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         val finalString: String = if (event.args.equals("would you rather", ignoreCase = true) || event.args.equals(
                 "wyr",
                 ignoreCase = true
@@ -43,12 +44,12 @@ class ChatDeadCmd : KopyCommand() {
 
     companion object {
         private fun wouldYouRather(): String {
-            val wyrQuestions = loadFile("WouldYouRather.txt")!!
+            val wyrQuestions = loadFile("resources/WouldYouRather.txt")!!
             return wyrQuestions[Random().nextInt(wyrQuestions.size)]
         }
 
         private fun generalQuestions(): String {
-            val generalQuestions = loadFile("GeneralQuestions.txt")!!
+            val generalQuestions = loadFile("resources/GeneralQuestions.txt")!!
             return generalQuestions[Random().nextInt(generalQuestions.size)]
         }
 

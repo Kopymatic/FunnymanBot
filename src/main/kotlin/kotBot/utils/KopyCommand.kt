@@ -3,30 +3,33 @@ package kotBot.utils
 import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandEvent
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Category
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
-import java.util.*
 
-abstract class KopyCommand: Command() {
+abstract class KopyCommand : Command() {
     val kdb = Reference.kdb
+    var doTyping = true
     /**
      * -- DO NOT OVERRIDE --
      * Use onCommandRun instead
      */
     override fun execute(event: CommandEvent?) {
-        if(event == null) return
+        if (event == null) return
+        if (Reference.doTyping && this.doTyping) event.channel.sendTyping().queue()
         trackStats(event)
-        GlobalScope.run {
-            onCommandRun(event)
+        val guildSettings = GuildSettings(event.guild.id)
+        GlobalScope.launch {
+            onCommandRun(event, guildSettings)
         }
     }
 
     /**
      * KopyCommand's implementation of execute, except event is nonnull and stats are tracked
      */
-    abstract fun onCommandRun(event: CommandEvent)
+    abstract suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings)
 
     /*
     For tracking bot statistics
@@ -52,16 +55,16 @@ fun Message.hasAttachments(): Boolean {
     return this.attachments.size > 0
 }
 
-fun CommandEvent.replyWithReference(message: String) {
-    this.channel.sendMessage(message).reference(this.message).queue()
+fun CommandEvent.replyWithReference(message: String, mention: Boolean = false) {
+    this.channel.sendMessage(message).reference(this.message).mentionRepliedUser(mention).queue()
 }
 
-fun CommandEvent.replyWithReference(embed: MessageEmbed) {
-    this.channel.sendMessage(embed).reference(this.message).queue()
+fun CommandEvent.replyWithReference(embed: MessageEmbed, mention: Boolean = false) {
+    this.channel.sendMessage(embed).reference(this.message).mentionRepliedUser(mention).queue()
 }
 
 fun Category.getDescription(): String { //TODO FINISH THIS
-    when(this.name) {
+    when (this.name) {
 
     }
     return ""

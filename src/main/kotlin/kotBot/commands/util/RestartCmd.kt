@@ -2,6 +2,7 @@ package kotBot.commands.util
 
 import com.jagrosh.jdautilities.command.CommandEvent
 import kotBot.main
+import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
 
@@ -13,9 +14,10 @@ class RestartCmd : KopyCommand() {
         hidden = true
         guildOnly = false
         category = Reference.utilityCategory
+        doTyping = false
     }
 
-    override fun onCommandRun(event: CommandEvent) {
+    override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
         event.reactSuccess()
         println("Restarted - This may cause issues")
         event.jda.shutdown()

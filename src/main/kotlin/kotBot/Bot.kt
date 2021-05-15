@@ -2,17 +2,8 @@ package kotBot
 
 import com.jagrosh.jdautilities.command.CommandClientBuilder
 import kotBot.commands.`fun`.*
-import kotBot.commands.`fun`.MemeCmd
-import kotBot.commands.`fun`.NoContextCmd
-import kotBot.commands.`fun`.PeopleCmd
-import kotBot.commands.`fun`.PetCmd
-import kotBot.commands.convenience.ChooseCmd
-import kotBot.commands.convenience.DylanModeCmd
-import kotBot.commands.convenience.HelpCmd
-import kotBot.commands.convenience.PollCmd
-import kotBot.commands.convenience.quickStringCommands.QuickStringCommand
+import kotBot.commands.convenience.*
 import kotBot.commands.util.*
-import kotBot.utils.EveryMessageManager
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
@@ -55,11 +46,19 @@ class Bot {
             QuickStringCommand.Say(),
             QuickStringCommand.Alphabetizer(),
             QuickStringCommand.RandomCaps(),
+            QuickStringCommand.BeQuiet(),
+            QuickStringCommand.AddClap(),
             DylanModeCmd(),
             RestartCmd(),
             UpdateStatusCmd(),
             SuggestCmd(),
-        )
+            TestCmd(),
+            Reference.ConfigCmd(),
+            GuildSettingsCmd(),
+            ShutdownCmd(),
+            PartnerCmd(),
+
+            )
     }
 
     fun createBot(token: String) {
@@ -78,7 +77,8 @@ class Bot {
 
         Reference.cmdClient = cmdClientBuilder.build()
 
-        Reference.jda = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES, GatewayIntent.GUILD_MESSAGE_REACTIONS)
+        Reference.jda = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES,
+            GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.GUILD_MESSAGE_TYPING)
             .disableCache(CacheFlag.VOICE_STATE, CacheFlag.EMOTE)
             .addEventListeners(Reference.waiter, Reference.cmdClient, Reference.everyMessageManager)
             .build()
