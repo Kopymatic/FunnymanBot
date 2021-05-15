@@ -1,6 +1,5 @@
 package kotBot.utils
 
-import org.postgresql.util.PSQLException
 import java.awt.Color
 import java.sql.PreparedStatement
 import java.sql.ResultSet
@@ -33,7 +32,7 @@ data class GuildSettings(
                 WHERE guildID = '$guildID';
                 """.trimIndent()
             ).executeQueryAndNext()
-        } catch (e: PSQLException) {
+        } catch (e: IndexOutOfBoundsException) {
             val ps = Reference.connection.prepareStatement(
                 """
                     INSERT INTO GuildSettings
@@ -75,6 +74,7 @@ private fun PreparedStatement.setStringAndReturnThis(parameterIndex: Int, value:
 
 private fun PreparedStatement.executeQueryAndNext(): ResultSet {
     val rs = this.executeQuery()
-    rs.next()
+    //Throw an exception if it is empty. Because i am lazy.
+    if (!rs.next()) throw ArrayIndexOutOfBoundsException()
     return rs
 }
