@@ -2,11 +2,7 @@ package kotBot
 
 import com.jagrosh.jdautilities.command.CommandClientBuilder
 import kotBot.commands.`fun`.*
-import kotBot.commands.convenience.ChooseCmd
-import kotBot.commands.convenience.DylanModeCmd
-import kotBot.commands.convenience.HelpCmd
-import kotBot.commands.convenience.PollCmd
-import kotBot.commands.convenience.quickStringCommands.QuickStringCommand
+import kotBot.commands.convenience.*
 import kotBot.commands.util.*
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.JDABuilder
@@ -50,6 +46,8 @@ class Bot {
             QuickStringCommand.Say(),
             QuickStringCommand.Alphabetizer(),
             QuickStringCommand.RandomCaps(),
+            QuickStringCommand.BeQuiet(),
+            QuickStringCommand.AddClap(),
             DylanModeCmd(),
             RestartCmd(),
             UpdateStatusCmd(),
@@ -57,8 +55,10 @@ class Bot {
             TestCmd(),
             Reference.ConfigCmd(),
             GuildSettingsCmd(),
-            ShutdownCmd()
-        )
+            ShutdownCmd(),
+            PartnerCmd(),
+
+            )
     }
 
     fun createBot(token: String) {

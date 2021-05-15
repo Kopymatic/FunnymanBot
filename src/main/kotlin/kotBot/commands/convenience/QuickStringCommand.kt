@@ -1,4 +1,4 @@
-package kotBot.commands.convenience.quickStringCommands
+package kotBot.commands.convenience
 
 import com.jagrosh.jdautilities.command.CommandEvent
 import kotBot.utils.GuildSettings
@@ -28,6 +28,14 @@ abstract class QuickStringCommand: KopyCommand() {
     protected var showUserByDefault: Boolean = false
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
+        if (event.args.contains("@everyone", true)) {
+            event.reply("Haha the funny person tried to ping everyone! Laugh at the funny person!")
+            return
+        }
+        if (event.args.contains("@here", true)) {
+            event.reply("Haha the funny person tried to ping here! Laugh at the funny person!")
+            return
+        }
         if (event.args.contains("anon")) {
             if (event.args.contains("embed") && isEmbeddable) {
                 val eb = EmbedBuilder()
@@ -48,7 +56,7 @@ abstract class QuickStringCommand: KopyCommand() {
         } else if (event.args.contains("embed") && isEmbeddable) {
             val eb = EmbedBuilder()
             eb.setColor(guildSettings.defaultColor)
-            if (showUserByDefault) eb.setFooter(event.author.name, event.author.effectiveAvatarUrl)
+            if (showUserByDefault) eb.setFooter(event.member.effectiveName, event.author.effectiveAvatarUrl)
 
             val quote = formatText(event.args.replace("embed", "").trim())
 
@@ -273,11 +281,41 @@ abstract class QuickStringCommand: KopyCommand() {
             val list = text.toList()
             var final = ""
             list.forEach { currentChar ->
-                final += if(Random().nextBoolean()) {
+                final += if (Random().nextBoolean()) {
                     currentChar.toUpperCase()
                 } else {
                     currentChar.toLowerCase()
                 }
+            }
+            return final
+        }
+    }
+
+    class BeQuiet : QuickStringCommand() {
+        init {
+            name = "BeQuiet"
+            aliases = arrayOf("Quiet")
+            quickString = "https://youtu.be/eAUka9omuU0"
+            this.help = "Stop talking. Be quiet. For several days."
+            guildOnly = false
+            category = Reference.quickStringCategory
+        }
+    }
+
+    class AddClap : QuickStringCommand() {
+        init {
+            name = "AddClap"
+            aliases = arrayOf("ac", "clap")
+            this.help = "Adds claps in between your words"
+            guildOnly = false
+            category = Reference.quickStringCategory
+        }
+
+        override fun formatText(text: String): String {
+            val list = text.split(" ")
+            var final = ":clap: "
+            for (current in list) {
+                final += "$current :clap: "
             }
             return final
         }
