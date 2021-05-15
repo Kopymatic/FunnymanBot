@@ -86,9 +86,10 @@ fun main() {
         """
             CREATE TABLE GuildSettings (
                guildID TEXT PRIMARY KEY,
-               defaultColor INT DEFAULT -36865,
+               defaultColor INT NOT NULL DEFAULT -36865,
                partneredGuilds TEXT,
-               doSexAlarm BOOLEAN DEFAULT TRUE
+               doSexAlarm BOOLEAN NOT NULL DEFAULT true
+               dylanMode boolean NOT NULL DEFAULT false
             );
         """.trimIndent()
     )
