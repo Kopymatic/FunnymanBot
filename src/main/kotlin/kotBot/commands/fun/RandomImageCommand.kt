@@ -183,7 +183,8 @@ abstract class RandomImageCommand : KopyCommand() {
             var found = false
             var reallySmallNumber: Double = 1.0 / dbSize
 
-            var whereStatement = "WHERE GuildID='${event.guild.id}'"
+            var whereStatement =
+                "WHERE GuildID='${event.guild.id}'" //Slightly inefficient, because a guild should always be partnered with itself
             for (partner in guildSettings.partneredGuilds!!) {
                 whereStatement += " OR GuildID='$partner'"
             }
@@ -231,7 +232,7 @@ abstract class RandomImageCommand : KopyCommand() {
                 }
 
                 val guildID = rs.getString("guildID")
-                //Check if the guild is valid, with a couple hardcoded testing guilds
+                //Check if the guild is valid
                 if (!guildSettings.partneredGuilds!!.contains(guildID)) { //if guild is invalid
                     event.replyWithReference("That ${this.name} entry is not available in this guild!")
                     return
@@ -245,9 +246,17 @@ abstract class RandomImageCommand : KopyCommand() {
                 }
                 whereStatement += ")"
 
-                val ps =
+                var ps =
                     kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE TextTag ILIKE ? $whereStatement;") //ILIKE means case insensitive
                 ps.setString(1, "%$args%") //Why do we put percent signs here??
+
+                if (args.equals("all", true)) {
+                    ps = kdb.connection.prepareStatement(
+                        "SELECT * FROM ${this.dbTableName} WHERE ${
+                            whereStatement.removePrefix("AND ")
+                        };"
+                    )
+                }
                 val rs = ps.executeQuery()
 
                 if (rs.next()) {

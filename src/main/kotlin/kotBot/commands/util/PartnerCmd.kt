@@ -40,7 +40,7 @@ class PartnerCmd : KopyCommand() {
             return
         }
 
-        var channel = event.guild.textChannels.find { channel -> channel.name.contains("funnyman", true) }
+        var channel = guild.textChannels.find { channel -> channel.name.contains("funnyman", true) }
         if (channel == null) {
             channel = guild.defaultChannel
         }
