@@ -49,7 +49,7 @@ abstract class RandomImageCommand : KopyCommand() {
      */
     private fun import() {
         val rawText = event.args
-        var textTag = "NULL" //sql null
+        var textTag: String //sql null
         var linkTag = "NULL" //sql null
 
         val matcher = Message.JUMP_URL_PATTERN.matcher(event.message.contentRaw)
@@ -110,7 +110,7 @@ abstract class RandomImageCommand : KopyCommand() {
             }
 
             val rawText = event.args.replace("edit $toEdit", "", true)
-            var textTag = "NULL" //sql null
+            var textTag: String //sql null
             var linkTag = "NULL" //sql null
 
             val matcher = Message.JUMP_URL_PATTERN.matcher(event.message.contentRaw)
@@ -395,7 +395,7 @@ class PeopleCmd : RandomImageCommand() {
         arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
         dbTableName = "People"
         footers =
-            arrayOf("Oh this- this is beautiful", "Looking fabulous!", "thats a cute ass person ya got there")
+            arrayOf("Oh this- this is beautiful", "Looking fabulous!", "that's a cute ass person ya got there")
         category = Reference.funCategory
     }
 }
@@ -410,8 +410,8 @@ class PetCmd : RandomImageCommand() {
         footers = arrayOf(
             "Oh this- this is beautiful",
             "Looking fabulous!",
-            "awwww cute pet",
-            "thats a cute ass pet ya got there"
+            "aww cute pet",
+            "that's a cute ass pet ya got there"
         )
         category = Reference.funCategory
     }
