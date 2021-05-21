@@ -33,7 +33,7 @@ class SuggestCmd : KopyCommand() {
 
         suggestChannel?.sendMessage(Embed {
             title = "Suggestion from ${event.author.asTag}"
-            description = "[${Reference.version}${if (Reference.experimental) " Experimental " else " "}]${event.args}"
+            description = "[${Reference.version}${if (Reference.experimental) " Experimental " else ""}] ${event.args}"
         })?.queue { message: Message ->
             message.addReaction("✅").queue()
             message.addReaction("❌").queue()

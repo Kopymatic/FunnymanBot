@@ -14,7 +14,7 @@ class Reference {
     companion object {
         const val experimental = true
         const val botName = "Funnyman"
-        var version: String = "4.3"
+        var version: String = "4.4"
         val token = if (!experimental) Config().mainToken else Config().devToken
         val status = Activity.watching("V$version ${if (experimental) "Experimental" else ""}")
         val ownerID = "326489320980611075"
