@@ -14,6 +14,13 @@ fun main() {
         """.trimIndent()
     )
 
+    update(
+        """
+        ALTER TABLE LoveCommands
+        ADD primaryKey SERIAL PRIMARY KEY;
+    """.trimIndent()
+    ) //For 4.4 only, can be removed after
+
     create( //Create NoContext
         """
                 CREATE TABLE NoContext(
@@ -103,6 +110,19 @@ fun create(sql: String) {
         stmt.close()
         c.close()
         println("Success!")
+    } catch (e: Exception) {
+        println(e.message)
+    }
+}
+
+fun update(sql: String) {
+    try {
+        val c = DriverManager.getConnection(Config().url, Config().userName, Config().password)
+        val stmt = c.createStatement()
+        stmt.executeUpdate(sql)
+        stmt.close()
+        c.close()
+        println("Edit Success!")
     } catch (e: Exception) {
         println(e.message)
     }
