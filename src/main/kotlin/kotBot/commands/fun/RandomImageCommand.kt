@@ -67,7 +67,7 @@ abstract class RandomImageCommand : KopyCommand() {
 //                    "LinkTag: $linkTag\nTextTag: $textTag\nImporterID: ${event.member.id}\nImportMessageID: ${event.message.id}"
 //        )
 
-        val ps = kdb.connection.prepareStatement(
+        val ps = connection.prepareStatement(
             """
             INSERT INTO ${this.dbTableName}
             VALUES(DEFAULT, ?, ?, ?, ?, ?, ?);
@@ -97,7 +97,8 @@ abstract class RandomImageCommand : KopyCommand() {
             return
         }
 
-        val rs = kdb.querySQL("SELECT * FROM ${this.dbTableName} WHERE id = $toEdit;")
+        val ps = connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE id = $toEdit;")
+        val rs = ps.executeQuery()
         if (rs.next()) {
             if (!isValidGuild(rs.getString("GuildID"))) {
                 event.reply("This ID isn't available in this guild!")
@@ -122,7 +123,7 @@ abstract class RandomImageCommand : KopyCommand() {
                 textTag = rawText
             }
 
-            val ps = kdb.connection.prepareStatement(
+            val ps = connection.prepareStatement(
                 """
                 UPDATE ${this.dbTableName}
                 SET textTag = ?, linkTag = ?
@@ -151,7 +152,8 @@ abstract class RandomImageCommand : KopyCommand() {
             return
         }
 
-        val rs = kdb.querySQL("SELECT * FROM ${this.dbTableName} WHERE id = $toDelete;")
+        val ps = connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE id = $toDelete;")
+        val rs = ps.executeQuery()
         if (rs.next()) {
             if (!isValidGuild(rs.getString("GuildID"))) {
                 event.reply("This ID isn't available in this guild!")
@@ -163,7 +165,7 @@ abstract class RandomImageCommand : KopyCommand() {
                 return
             }
 
-            val ps = kdb.connection.prepareStatement("DELETE FROM ${this.dbTableName} WHERE id=$toDelete;")
+            val ps = connection.prepareStatement("DELETE FROM ${this.dbTableName} WHERE id=$toDelete;")
             if (ps.executeUpdate() == 1) {
                 event.reactSuccess()
             }
@@ -173,7 +175,7 @@ abstract class RandomImageCommand : KopyCommand() {
     }
 
     private fun send() {
-        val ps1 = kdb.connection.prepareStatement("SELECT MAX(id) FROM ${this.dbTableName}")
+        val ps1 = connection.prepareStatement("SELECT MAX(id) FROM ${this.dbTableName}")
         val rs1 = ps1.executeQuery()
         rs1.next()
         val dbSize = rs1.getInt(1)
@@ -191,7 +193,7 @@ abstract class RandomImageCommand : KopyCommand() {
 
             while (reallySmallNumber <= 100) {
                 val ps =
-                    kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} TABLESAMPLE BERNOULLI($reallySmallNumber) $whereStatement LIMIT 1;")
+                    connection.prepareStatement("SELECT * FROM ${this.dbTableName} TABLESAMPLE BERNOULLI($reallySmallNumber) $whereStatement LIMIT 1;")
                 rs = ps.executeQuery()
 
                 if (!rs.next()) {
@@ -204,7 +206,7 @@ abstract class RandomImageCommand : KopyCommand() {
             }
             if (!found) {
                 val ps =
-                    kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} TABLESAMPLE BERNOULLI(100) WHERE GuildID='${event.guild.id}' LIMIT 1;")
+                    connection.prepareStatement("SELECT * FROM ${this.dbTableName} TABLESAMPLE BERNOULLI(100) WHERE GuildID='${event.guild.id}' LIMIT 1;")
                 rs = ps.executeQuery()
                 if (!rs.next()) {
                     event.replyWithReference("Error: Likely you have nothing imported in this server, or a database error has occurred.")
@@ -218,7 +220,7 @@ abstract class RandomImageCommand : KopyCommand() {
             try {
                 val request = args.toInt()
 
-                val ps = kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE id = $request;")
+                val ps = connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE id = $request;")
                 val rs = ps.executeQuery()
                 if (!rs.next()) {
                     event.replyWithReference(
@@ -247,11 +249,11 @@ abstract class RandomImageCommand : KopyCommand() {
                 whereStatement += ")"
 
                 var ps =
-                    kdb.connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE TextTag ILIKE ? $whereStatement;") //ILIKE means case insensitive
+                    connection.prepareStatement("SELECT * FROM ${this.dbTableName} WHERE TextTag ILIKE ? $whereStatement;") //ILIKE means case insensitive
                 ps.setString(1, "%$args%") //Why do we put percent signs here??
 
                 if (args.equals("all", true)) {
-                    ps = kdb.connection.prepareStatement(
+                    ps = connection.prepareStatement(
                         "SELECT * FROM ${this.dbTableName} WHERE ${
                             whereStatement.removePrefix("AND ")
                         };"

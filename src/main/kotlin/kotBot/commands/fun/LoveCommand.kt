@@ -5,6 +5,7 @@ import dev.minn.jda.ktx.Embed
 import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
+import kotBot.utils.replyWithReference
 import net.dv8tion.jda.api.entities.Message
 import java.util.*
 
@@ -57,27 +58,48 @@ abstract class LoveCommand : KopyCommand() {
     private val sixtyNineGifs = arrayOf("https://media1.tenor.com/images/552432b67854256e7b51ab96c86d8b80/tenor.gif")
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
+        if (event.isOwner && event.args.startsWith("set")) {
+            if (event.args.split(",").size == 1) {
+                event.reply("Format like `senderID,recieverID,newAmount`")
+            } else {
+                val args = event.args.split(" ")[1].split(",")
+                if (args.size != 3) return
+
+                val ps = connection.prepareStatement(
+                    "UPDATE LoveCommands " +
+                            "SET TimesPerformed = ${args[2]} " +
+                            "WHERE SenderID = '${args[0]}' AND ReceiverID = '${args[1]}' AND ActionIdentifier = '${this.actionIdentifier}';"
+                )
+                val affected = ps.executeUpdate()
+                event.replyWithReference("$affected rows affected")
+                return
+            }
+        }
         //on command run, if we have mentioned users enter the command
         if (event.message.mentionedMembers.size > 0) {
             val userID: String = event.author.id //Get the IDs we need
             val mentionID: String = event.message.mentionedUsers[0].id
 
-            val rs = kdb.querySQL(
+            var ps = Reference.connection.prepareStatement(
                 "SELECT * FROM LoveCommands WHERE SenderID = '$userID' AND ReceiverID = '$mentionID' AND ActionIdentifier = '${this.actionIdentifier}';"
             )
+            val rs = ps.executeQuery()
 
             val timesPerformed: Int
             if(rs.next()) {
                 timesPerformed = rs.getInt("TimesPerformed") + 1
-                kdb.updateSQL(
+                ps = connection.prepareStatement(
                     "UPDATE LoveCommands " +
-                        "SET TimesPerformed = $timesPerformed " +
-                        "WHERE SenderID = '$userID' AND ReceiverID = '$mentionID' AND ActionIdentifier = '${this.actionIdentifier}';")
+                            "SET TimesPerformed = $timesPerformed " +
+                            "WHERE SenderID = '$userID' AND ReceiverID = '$mentionID' AND ActionIdentifier = '${this.actionIdentifier}';"
+                )
+                ps.executeUpdate()
             } else {
-                kdb.updateSQL(
+                ps = connection.prepareStatement(
                     "INSERT INTO LoveCommands VALUES ('$userID', '$mentionID', '${this.actionIdentifier}', 1);"
                 )
                 timesPerformed = 1
+                ps.executeUpdate()
             }
 
             val gif: String = if (timesPerformed.toString().contains("69")) {
@@ -91,7 +113,7 @@ abstract class LoveCommand : KopyCommand() {
                     color = guildSettings.rgb,
                     title = "${event.member.effectiveName} $embedTitleText ${event.message.mentionedMembers[0].effectiveName}",
                     image = gif,
-                    footerText = "That's $timesPerformed $embedFooterText now!"
+                    footerText = "That's ${"%,d".format(timesPerformed)} $embedFooterText now!"
                 )
             ).queue { message: Message ->
                 if(Random().nextInt(100) < reactionPercent) {

@@ -10,7 +10,7 @@ import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
 
 abstract class KopyCommand : Command() {
-    val kdb = Reference.kdb
+    val connection = Reference.connection
     var doTyping = true
     /**
      * -- DO NOT OVERRIDE --

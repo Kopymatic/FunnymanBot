@@ -23,7 +23,10 @@ class EverythingListener : ListenerAdapter() {
 
         if (guildSettings.doSexAlarm) {
             if (event.message.contentRaw.contains("sex", true)) {
-                val channel = event.guild.textChannels.find { channel -> channel.name == "sex-alarm" }
+                var channel = event.guild.textChannels.find { channel -> channel.name == "sex-alarm" }
+                if (channel == null) {
+                    channel = event.guild.textChannels.find { channel1 -> channel1.name == Reference.feedChannelName }
+                }
                 channel?.sendMessage("${event.member?.effectiveName} has sexed in <#${event.channel.id}>!!!! :flushed:")
                     ?.queue()
             }
