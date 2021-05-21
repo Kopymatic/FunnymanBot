@@ -19,7 +19,7 @@ data class GuildSettings(
     constructor(resultSet: ResultSet) : this(
         resultSet.getString("guildID"),
         Color(resultSet.getInt("defaultColor")),
-        resultSet.getString("partneredGuilds")?.split(",")?.toMutableList(),
+        makeList(resultSet),
         resultSet.getBoolean("doSexAlarm"),
         resultSet.getBoolean("dylanMode")
     )
@@ -64,6 +64,18 @@ data class GuildSettings(
         ps.setBoolean(4, dylanMode)
 
         ps.executeUpdate()
+    }
+
+    companion object {
+        private fun makeList(resultSet: ResultSet): MutableList<String>? {
+            val list = resultSet.getString("partneredGuilds")?.split(",")?.toMutableList()
+            if (list != null) {
+                for (i in 0 until list.size) {
+                    list[i] = list[i].trim()
+                }
+            }
+            return list
+        }
     }
 }
 
