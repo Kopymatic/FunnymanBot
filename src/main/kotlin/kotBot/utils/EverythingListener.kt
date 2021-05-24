@@ -2,6 +2,7 @@ package kotBot.utils
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import java.util.*
 
 class EverythingListener : ListenerAdapter() {
 
@@ -19,6 +20,7 @@ class EverythingListener : ListenerAdapter() {
         if (event.isFromGuild) {
             val guildSettings = GuildSettings(event.guild.id)
 
+            println(guildSettings)
             if (guildSettings.dylanMode && event.message.referencedMessage != null) {
                 val referencedMessage = event.message.referencedMessage!!
                 event.channel.sendMessage(
@@ -39,6 +41,14 @@ class EverythingListener : ListenerAdapter() {
                     }
                     channel?.sendMessage("${event.member?.effectiveName} has sexed in <#${event.channel.id}>!!!! :flushed:")
                         ?.queue()
+                }
+            }
+
+            if (guildSettings.joeMode && event.message.contentRaw.contains("joe", true)) {
+                if (Random().nextBoolean()) {
+                    event.channel.sendMessage("Joe Biden, the president of this god blessed country :flag_us:").queue()
+                } else {
+                    event.channel.sendMessage("Joe mamma!!!").queue()
                 }
             }
         }

@@ -26,12 +26,14 @@ class GuildSettingsCmd : KopyCommand() {
                     defaultColor: Color (rgb format) = ${guildSettings.defaultColor.red}, ${guildSettings.defaultColor.green}, ${guildSettings.defaultColor.blue}
                     doSexAlarm: Boolean = ${guildSettings.doSexAlarm}
                     dylanMode: Boolean = ${guildSettings.dylanMode}
+                    joeMode: Boolean = ${guildSettings.joeMode}
                     ```
                     Change them with `${Reference.mainPrefix}${this.name} [variable] = [assignment]`
                 """.trimIndent()
             )
         } else {
-            val args = event.args.split("=")
+            val args = event.args.split("=").toMutableList()
+            args[1] = args[1].trim()
             if (args.size < 2) {
                 event.reply("Not enough args - make sure to remember the equal sign"); return
             }
@@ -52,7 +54,12 @@ class GuildSettingsCmd : KopyCommand() {
                 "dylanmode" -> {
                     guildSettings.dylanMode = args[1].toBoolean()
                 }
-                else -> event.reply("Variable not found")
+                "joemode" -> {
+                    guildSettings.joeMode = args[1].toBoolean()
+                }
+                else -> {
+                    event.reply("Variable not found"); return
+                }
             }
             guildSettings.push()
             event.reactSuccess()
