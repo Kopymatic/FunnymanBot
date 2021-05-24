@@ -94,6 +94,34 @@ fun main() {
             );
         """.trimIndent()
     )
+
+    create(
+        """
+            CREATE TABLE ClickerUsers (
+               userID TEXT PRIMARY KEY,
+               lastKnownUsername TEXT,
+               cookies TEXT DEFAULT '0',
+               cursors INT DEFAULT 0,
+               grandmas INT DEFAULT 0,
+               farms INT DEFAULT 0,
+               mines INT DEFAULT 0,
+               factories INT DEFAULT 0,
+               banks INT DEFAULT 0,
+               temples INT DEFAULT 0,
+               wizardTowers INT DEFAULT 0,
+               shipments INT DEFAULT 0,
+               alchemyLabs INT DEFAULT 0,
+               portals INT DEFAULT 0,
+               timeMachines INT DEFAULT 0,
+               antimatterCondensers INT DEFAULT 0,
+               prisms INT DEFAULT 0,
+               chancemakers INT DEFAULT 0,
+               fractalEngines INT DEFAULT 0,
+               javascriptConsoles INT DEFAULT 0,
+               idleverses INT DEFAULT 0
+            );
+        """.trimIndent()
+    )
 }
 
 fun create(sql: String) {

@@ -4,6 +4,7 @@ import com.jagrosh.jdautilities.command.CommandClientBuilder
 import kotBot.commands.`fun`.*
 import kotBot.commands.convenience.*
 import kotBot.commands.util.*
+import kotBot.cookieClicker.GetCookieCmd
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
@@ -57,8 +58,8 @@ class Bot {
             GuildSettingsCmd(),
             ShutdownCmd(),
             PartnerCmd(),
-
-            )
+            GetCookieCmd(),
+        )
     }
 
     fun createBot(token: String) {

@@ -16,6 +16,7 @@ import kotlin.system.exitProcess
 
 class Reference {
     companion object {
+
         const val experimental = true
         const val botName = "Funnyman"
         var version: String = "4.5"
@@ -30,8 +31,10 @@ class Reference {
         val convenienceCategory = Command.Category("Convenience")
         val funCategory = Command.Category("Fun")
         val utilityCategory = Command.Category("Utility")
+        val cookieClickerCategory = Command.Category("CookieClicker")
         val quickStringCategory = Command.Category("QuickStringCommands")
-        val categories = arrayOf(funCategory, convenienceCategory, utilityCategory, quickStringCategory)
+        val categories =
+            arrayOf(funCategory, convenienceCategory, utilityCategory, cookieClickerCategory, quickStringCategory)
 
         val mainPrefix = if (!experimental) "pp" else "dd"
         val alternativePrefix = if (!experimental) "p!" else "d!"
