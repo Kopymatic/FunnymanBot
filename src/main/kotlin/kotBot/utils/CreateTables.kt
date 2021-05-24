@@ -9,17 +9,11 @@ fun main() {
             SenderID TEXT NOT NULL,
             ReceiverID TEXT NOT NULL,
             ActionIdentifier TEXT NOT NULL,
-            TimesPerformed INT NOT NULL
+            TimesPerformed INT NOT NULL,
+            primaryKey SERIAL PRIMARY KEY
             );
         """.trimIndent()
     )
-
-    update(
-        """
-        ALTER TABLE LoveCommands
-        ADD primaryKey SERIAL PRIMARY KEY;
-    """.trimIndent()
-    ) //For 4.4 only, can be removed after
 
     create( //Create NoContext
         """
@@ -99,6 +93,12 @@ fun main() {
                dylanMode boolean NOT NULL DEFAULT false
             );
         """.trimIndent()
+    )
+
+    update(
+        """
+        ALTER TABLE GuildSettings ADD JoeMode BOOLEAN DEFAULT FALSE;
+    """.trimIndent()
     )
 }
 

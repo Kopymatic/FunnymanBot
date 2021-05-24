@@ -2,30 +2,54 @@ package kotBot.utils
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import java.util.*
 
 class EverythingListener : ListenerAdapter() {
 
     override fun onMessageReceived(event: MessageReceivedEvent) {
         if (event.author.isBot) return
         if (Reference.emergencyDisable) return
-        val guildSettings = GuildSettings(event.guild.id)
 
-        if (guildSettings.dylanMode && event.message.referencedMessage != null) {
-            val referencedMessage = event.message.referencedMessage!!
-            event.channel.sendMessage(
-                "**${event.member?.effectiveName}** replied to **${referencedMessage.member?.effectiveName}**\n" +
-                        "> *${
-                            referencedMessage.contentStripped.replace("\n", "\n> ").replace("@everyone", "everyone")
-                                .replace("@here", "here")
-                        }*\n" + event.message.contentRaw
-            ).queue()
+        if (event.message.contentStripped == "k") {
+            val emote = event.jda.getEmoteById("685602497733328924")
+            if (emote != null) {
+                event.message.addReaction(emote).queue()
+            }
         }
 
-        if (guildSettings.doSexAlarm) {
-            if (event.message.contentRaw.contains("sex", true)) {
-                val channel = event.guild.textChannels.find { channel -> channel.name == "sex-alarm" }
-                channel?.sendMessage("${event.member?.effectiveName} has sexed in <#${event.channel.id}>!!!! :flushed:")
-                    ?.queue()
+        if (event.isFromGuild) {
+            val guildSettings = GuildSettings(event.guild.id)
+
+            println(guildSettings)
+            if (guildSettings.dylanMode && event.message.referencedMessage != null) {
+                val referencedMessage = event.message.referencedMessage!!
+                event.channel.sendMessage(
+                    "**${event.member?.effectiveName}** replied to **${referencedMessage.member?.effectiveName}**\n" +
+                            "> *${
+                                referencedMessage.contentStripped.replace("\n", "\n> ").replace("@everyone", "everyone")
+                                    .replace("@here", "here")
+                            }*\n" + event.message.contentRaw
+                ).queue()
+            }
+
+            if (guildSettings.doSexAlarm) {
+                if (event.message.contentRaw.contains("sex", true)) {
+                    var channel = event.guild.textChannels.find { channel -> channel.name == "sex-alarm" }
+                    if (channel == null) {
+                        channel =
+                            event.guild.textChannels.find { channel1 -> channel1.name == Reference.feedChannelName }
+                    }
+                    channel?.sendMessage("${event.member?.effectiveName} has sexed in <#${event.channel.id}>!!!! :flushed:")
+                        ?.queue()
+                }
+            }
+
+            if (guildSettings.joeMode && event.message.contentRaw.contains("joe", true)) {
+                if (Random().nextBoolean()) {
+                    event.channel.sendMessage("Joe Biden, the president of this god blessed country :flag_us:").queue()
+                } else {
+                    event.channel.sendMessage("Joe mamma!!!").queue()
+                }
             }
         }
     }

@@ -7,14 +7,18 @@ import com.jagrosh.jdautilities.commons.waiter.EventWaiter
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
 import java.awt.Color
+import java.sql.Connection
+import java.sql.DriverManager
+import java.sql.SQLException
 import java.time.format.DateTimeFormatter
 import java.time.format.DateTimeFormatterBuilder
+import kotlin.system.exitProcess
 
 class Reference {
     companion object {
         const val experimental = true
         const val botName = "Funnyman"
-        var version: String = "4.4"
+        var version: String = "4.5"
         val token = if (!experimental) Config().mainToken else Config().devToken
         val status = Activity.watching("V$version ${if (experimental) "Experimental" else ""}")
         val ownerID = "326489320980611075"
@@ -35,14 +39,26 @@ class Reference {
         var defaultColor: Color = Color(255, 111, 255)
         var rgb: Int = defaultColor.rgb
 
-        val kdb = KopyDB()
-        val connection = kdb.connection
+        val connection = connect()
         lateinit var jda: JDA
         val waiter: EventWaiter = EventWaiter()
         lateinit var cmdClient: CommandClient
         val everyMessageManager = EverythingListener()
+        val feedChannelName = "funnyman-feed"
 
         var emergencyDisable = false //Disables EverythingListener
+
+        private fun connect(): Connection {
+            try {
+                val conn = DriverManager.getConnection(Config().url, Config().userName, Config().password)
+                println("Connected to the PostgreSQL server successfully.")
+                return conn
+            } catch (e: SQLException) {
+                println(e.message)
+                println("The database failed to connect, exiting process")
+                exitProcess(0)
+            }
+        }
     }
 
     class ConfigCmd : KopyCommand() {
