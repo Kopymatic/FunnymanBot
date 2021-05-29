@@ -330,7 +330,7 @@ abstract class RandomImageCommand : KopyCommand() {
         val validEndings = arrayOf(".jpg", ".png", ".gif", ".jpeg")
         var isValid = false
         for (ending in validEndings) {
-            if (image.toLowerCase().endsWith(ending)) {
+            if (image.toLowerCase().contains(ending)) {
                 isValid = true
                 break
             }
