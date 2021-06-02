@@ -4,6 +4,12 @@ import com.jagrosh.jdautilities.command.CommandClientBuilder
 import kotBot.commands.`fun`.*
 import kotBot.commands.convenience.*
 import kotBot.commands.util.*
+import kotBot.slashCommands.SlashCommand
+import kotBot.slashCommands.SlashCommandManager
+import kotBot.slashCommands.convenience.SaySlaCmd
+import kotBot.slashCommands.util.BanSlaCmd
+import kotBot.slashCommands.util.LeaveSlaCmd
+import kotBot.slashCommands.util.PruneSlaCmd
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
@@ -59,6 +65,12 @@ class Bot {
             PartnerCmd(),
 
             )
+        val slashCommands = mutableListOf<SlashCommand>(
+            BanSlaCmd(),
+            SaySlaCmd(),
+            LeaveSlaCmd(),
+            PruneSlaCmd(),
+        )
     }
 
     fun createBot(token: String) {
@@ -84,10 +96,17 @@ class Bot {
             GatewayIntent.GUILD_MESSAGE_REACTIONS,
             GatewayIntent.DIRECT_MESSAGE_TYPING,
             GatewayIntent.GUILD_MESSAGE_TYPING,
-            GatewayIntent.GUILD_EMOJIS
+            GatewayIntent.GUILD_EMOJIS,
         )
             .disableCache(CacheFlag.VOICE_STATE)
             .addEventListeners(Reference.waiter, Reference.cmdClient, Reference.everyMessageManager)
             .build()
+
+        Reference.jda.awaitReady()
+
+        Reference.slashCommandManager = SlashCommandManager(slashCommands)
+        Reference.jda.addEventListener(Reference.slashCommandManager)
+        Reference.slashCommandManager.setup()
+
     }
 }

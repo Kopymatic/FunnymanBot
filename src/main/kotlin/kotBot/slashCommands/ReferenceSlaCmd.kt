@@ -1,0 +1,3 @@
+package kotBot.slashCommands
+
+class ReferenceSlaCmd
