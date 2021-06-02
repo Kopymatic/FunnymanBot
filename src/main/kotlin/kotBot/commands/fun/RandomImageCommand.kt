@@ -60,33 +60,38 @@ abstract class RandomImageCommand : KopyCommand() {
         } else {
             textTag = rawText
         }
-
-        //DEBUG STATEMENT
-//        println(
-//            "New ${this.name} entry:\nid: DEFAULT\nguildID: ${event.guild.id}\nImageLink: ${event.message.attachments[0].url}\n" +
-//                    "LinkTag: $linkTag\nTextTag: $textTag\nImporterID: ${event.member.id}\nImportMessageID: ${event.message.id}"
-//        )
-
-        val ps = connection.prepareStatement(
-            """
+        val attachments = event.message.attachments
+        var successes = 0
+        for (i in 0 until attachments.size) {
+            val ps = connection.prepareStatement(
+                """
             INSERT INTO ${this.dbTableName}
             VALUES(DEFAULT, ?, ?, ?, ?, ?, ?);
             """.trimIndent()
-        )
-        ps.setString(1, event.guild.id) //Set the first ? in the prepared statement to guildID
-        ps.setString(2, event.message.attachments[0].url) //second ? is imageURL
-        ps.setString(3, linkTag) //third is linkTag
-        ps.setString(4, textTag) //fourth is textTag
-        ps.setString(5, event.member.id) //fifth is memberID
-        ps.setString(6, event.message.id) //Last is messageID
-        try {
-            ps.executeUpdate()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            event.reactError()
-            return
+            )
+            ps.setString(1, event.guild.id) //Set the first ? in the prepared statement to guildID
+            ps.setString(2, attachments[i].url) //second ? is imageURL
+            ps.setString(3, linkTag) //third is linkTag
+            ps.setString(4, textTag) //fourth is textTag
+            ps.setString(5, event.member.id) //fifth is memberID
+            ps.setString(6, event.message.id) //Last is messageID
+            try {
+                ps.executeUpdate()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                event.reactError()
+                return
+            }
+            successes++
         }
-        event.reactSuccess()
+        if (successes == 0) {
+            event.reactError()
+        } else {
+            event.reactSuccess()
+        }
+        if (successes > 1) {
+            event.replyWithReference("Successfully imported $successes images.")
+        }
     }
 
     private fun edit() {
@@ -213,7 +218,10 @@ abstract class RandomImageCommand : KopyCommand() {
                     return
                 }
             }
-            event.reply(makeEmbed(rs!!))
+            val embed = makeEmbed(rs!!)
+            if (embed == null) {
+                event.reply(makeText(rs))
+            } else event.reply(embed)
 
         } else {
             val args = event.args
@@ -239,7 +247,10 @@ abstract class RandomImageCommand : KopyCommand() {
                     event.replyWithReference("That ${this.name} entry is not available in this guild!")
                     return
                 }
-                event.reply(makeEmbed(rs))
+                val embed = makeEmbed(rs!!)
+                if (embed == null) {
+                    event.reply(makeText(rs))
+                } else event.reply(embed)
 
             } catch (e: NumberFormatException) {
                 var whereStatement = "AND (GuildID='${event.guild.id}'"
@@ -281,14 +292,19 @@ abstract class RandomImageCommand : KopyCommand() {
 
                     var pageNum = 1
 
-                    ep.addItems(makeEmbed(rs, "Page $pageNum"))
                     while (rs.next()) {
-                        pageNum++
-                        ep.addItems(makeEmbed(rs, "Page $pageNum"))
+                        val embed = makeEmbed(rs, "Page $pageNum")
+                        if (embed != null) {
+                            ep.addItems(embed)
+                            pageNum++
+                        }
                     }
-                    ep.build().paginate(event.channel, 0)
-
-
+                    if (pageNum != 1) {
+                        ep.build().paginate(event.channel, 0)
+                    } else {
+                        event.replyWithReference("No results found! (Cannot search for videos)")
+                        return
+                    }
                 } else {
                     event.replyWithReference("No results found!")
                     return
@@ -301,16 +317,27 @@ abstract class RandomImageCommand : KopyCommand() {
         return this.event.guild.id == guildID
     }
 
-    private fun makeEmbed(rs: ResultSet): MessageEmbed {
+    private fun makeEmbed(rs: ResultSet): MessageEmbed? {
         return makeEmbed(rs, footers[Random().nextInt(footers.size)])
     }
 
-    private fun makeEmbed(rs: ResultSet, footer: String): MessageEmbed {
+    private fun makeEmbed(rs: ResultSet, footer: String): MessageEmbed? {
         val id = rs.getInt("id")
         val textTag = rs.getString("textTag")
         val linkTag = rs.getString("linkTag")
         val image = rs.getString("imageLink")
 
+        val validEndings = arrayOf(".jpg", ".png", ".gif", ".jpeg")
+        var isValid = false
+        for (ending in validEndings) {
+            if (image.toLowerCase().contains(ending)) {
+                isValid = true
+                break
+            }
+        }
+        if (!isValid) {
+            return null
+        }
         var descText: String? = "[$textTag]($linkTag)"
         var url: String? = null
 
@@ -331,6 +358,15 @@ abstract class RandomImageCommand : KopyCommand() {
             footerText = footer,
             color = guildSettings.rgb
         ))
+    }
+
+    private fun makeText(rs: ResultSet): String {
+        val id = rs.getInt("id")
+        val textTag = rs.getString("textTag")
+        val image = rs.getString("imageLink")
+
+        return "${this.name} #$id${if (textTag.isEmpty()) "" else "\nText: $textTag"}\n$image"
+            .trimIndent()
     }
 
     override fun getAdvancedHelp(): EmbedBuilder? {

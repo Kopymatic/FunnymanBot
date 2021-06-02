@@ -122,6 +122,12 @@ fun main() {
             );
         """.trimIndent()
     )
+
+    update(
+        """
+        ALTER TABLE GuildSettings ADD JoeMode BOOLEAN DEFAULT FALSE;
+    """.trimIndent()
+    )
 }
 
 fun create(sql: String) {

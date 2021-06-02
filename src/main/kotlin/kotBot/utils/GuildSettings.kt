@@ -10,6 +10,7 @@ data class GuildSettings(
     var partneredGuilds: MutableList<String>?,
     var doSexAlarm: Boolean,
     var dylanMode: Boolean,
+    var joeMode: Boolean
 ) {
     val rgb = defaultColor.rgb
 
@@ -21,7 +22,8 @@ data class GuildSettings(
         Color(resultSet.getInt("defaultColor")),
         makeList(resultSet),
         resultSet.getBoolean("doSexAlarm"),
-        resultSet.getBoolean("dylanMode")
+        resultSet.getBoolean("dylanMode"),
+        resultSet.getBoolean("JoeMode")
     )
 
     constructor(guildID: String) : this(
@@ -36,8 +38,8 @@ data class GuildSettings(
             val ps = Reference.connection.prepareStatement(
                 """
                     INSERT INTO GuildSettings
-                    VALUES('$guildID', DEFAULT, '$guildID', DEFAULT);
-                    """.trimIndent()
+                    VALUES('$guildID', DEFAULT, '$guildID', DEFAULT, DEFAULT);
+                    """.trimIndent() //WHEN YOU ADD NEW THINGS UPDATE THIS
             )
             ps.executeUpdate()
 
@@ -54,7 +56,7 @@ data class GuildSettings(
         val ps = Reference.connection.prepareStatement(
             """
                 UPDATE GuildSettings
-                SET defaultColor = ?, partneredGuilds = ?, doSexAlarm = ?, dylanMode = ?
+                SET defaultColor = ?, partneredGuilds = ?, doSexAlarm = ?, dylanMode = ?, JoeMode = ?
                 WHERE guildID = '$guildID';
             """.trimIndent()
         )
@@ -62,6 +64,7 @@ data class GuildSettings(
         ps.setString(2, partneredGuilds.toString().removePrefix("[").removeSuffix("]"))
         ps.setBoolean(3, doSexAlarm)
         ps.setBoolean(4, dylanMode)
+        ps.setBoolean(5, joeMode)
 
         ps.executeUpdate()
     }

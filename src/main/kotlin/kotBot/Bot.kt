@@ -78,9 +78,16 @@ class Bot {
 
         Reference.cmdClient = cmdClientBuilder.build()
 
-        Reference.jda = JDABuilder.createDefault(token, GatewayIntent.GUILD_MESSAGES, GatewayIntent.DIRECT_MESSAGES,
-            GatewayIntent.GUILD_MESSAGE_REACTIONS, GatewayIntent.DIRECT_MESSAGE_TYPING, GatewayIntent.GUILD_MESSAGE_TYPING)
-            .disableCache(CacheFlag.VOICE_STATE, CacheFlag.EMOTE)
+        Reference.jda = JDABuilder.createDefault(
+            token,
+            GatewayIntent.GUILD_MESSAGES,
+            GatewayIntent.DIRECT_MESSAGES,
+            GatewayIntent.GUILD_MESSAGE_REACTIONS,
+            GatewayIntent.DIRECT_MESSAGE_TYPING,
+            GatewayIntent.GUILD_MESSAGE_TYPING,
+            GatewayIntent.GUILD_EMOJIS
+        )
+            .disableCache(CacheFlag.VOICE_STATE)
             .addEventListeners(Reference.waiter, Reference.cmdClient, Reference.everyMessageManager)
             .build()
     }
