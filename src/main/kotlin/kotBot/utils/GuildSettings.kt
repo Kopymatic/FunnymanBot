@@ -38,7 +38,7 @@ data class GuildSettings(
             val ps = Reference.connection.prepareStatement(
                 """
                     INSERT INTO GuildSettings
-                    VALUES(GuildID = '$guildID', PartneredGuilds = '$guildID');
+                    VALUES('$guildID', DEFAULT, '$guildID', DEFAULT, DEFAULT);
                     """.trimIndent() //WHEN YOU ADD NEW THINGS UPDATE THIS
             )
             ps.executeUpdate()

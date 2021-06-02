@@ -20,7 +20,6 @@ class EverythingListener : ListenerAdapter() {
         if (event.isFromGuild) {
             val guildSettings = GuildSettings(event.guild.id)
 
-            println(guildSettings)
             if (guildSettings.dylanMode && event.message.referencedMessage != null) {
                 val referencedMessage = event.message.referencedMessage!!
                 event.channel.sendMessage(

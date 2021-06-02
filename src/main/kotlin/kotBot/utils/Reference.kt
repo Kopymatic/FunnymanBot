@@ -17,7 +17,7 @@ import kotlin.system.exitProcess
 
 class Reference {
     companion object {
-        const val experimental = true
+        const val experimental = false
         const val botName = "Funnyman"
         var version: String = "4.5"
         val token = if (!experimental) Config().mainToken else Config().devToken
