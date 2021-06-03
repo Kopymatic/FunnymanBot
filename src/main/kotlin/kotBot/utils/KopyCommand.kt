@@ -5,7 +5,6 @@ import com.jagrosh.jdautilities.command.CommandEvent
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.EmbedBuilder
-import net.dv8tion.jda.api.entities.Category
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
 
@@ -48,6 +47,10 @@ abstract class KopyCommand : Command() {
         aliases.addAll(listOf(*getAliases()))
         return aliases
     }
+
+    fun makeField(title: String, text: String, inline: Boolean = false): MessageEmbed.Field {
+        return MessageEmbed.Field(title, text, inline)
+    }
 }
 
 
@@ -61,11 +64,4 @@ fun CommandEvent.replyWithReference(message: String, mention: Boolean = false) {
 
 fun CommandEvent.replyWithReference(embed: MessageEmbed, mention: Boolean = false) {
     this.channel.sendMessage(embed).reference(this.message).mentionRepliedUser(mention).queue()
-}
-
-fun Category.getDescription(): String { //TODO FINISH THIS
-    when (this.name) {
-
-    }
-    return ""
 }

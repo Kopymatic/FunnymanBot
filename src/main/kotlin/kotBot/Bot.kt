@@ -57,7 +57,7 @@ class Bot {
             GuildSettingsCmd(),
             ShutdownCmd(),
             PartnerCmd(),
-
+            //AboutCmd(), TODO Finish aboutcmd
             )
     }
 
