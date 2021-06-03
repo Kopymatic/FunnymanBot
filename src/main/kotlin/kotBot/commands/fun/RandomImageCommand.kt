@@ -292,14 +292,14 @@ abstract class RandomImageCommand : KopyCommand() {
 
                     var pageNum = 1
 
-                    while (rs.next()) {
+                    do {
                         val embed = makeEmbed(rs, "Page $pageNum")
                         if (embed != null) {
                             ep.addItems(embed)
                             pageNum++
                         }
-                    }
-                    if (pageNum != 1) {
+                    } while (rs.next())
+                    if (pageNum >= 2) {
                         ep.build().paginate(event.channel, 0)
                     } else {
                         event.replyWithReference("No results found! (Cannot search for videos)")
@@ -327,15 +327,15 @@ abstract class RandomImageCommand : KopyCommand() {
         val linkTag = rs.getString("linkTag")
         val image = rs.getString("imageLink")
 
-        val validEndings = arrayOf(".jpg", ".png", ".gif", ".jpeg")
-        var isValid = false
-        for (ending in validEndings) {
-            if (image.toLowerCase().contains(ending)) {
-                isValid = true
+        val invalidEndings = arrayOf(".mp4")
+        var isInvalid = false
+        for (ending in invalidEndings) {
+            if (image.endsWith(ending, true)) {
+                isInvalid = true
                 break
             }
         }
-        if (!isValid) {
+        if (isInvalid) {
             return null
         }
         var descText: String? = "[$textTag]($linkTag)"
