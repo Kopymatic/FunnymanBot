@@ -1,6 +1,5 @@
 package kotBot.utils
 
-import com.jagrosh.jdautilities.command.Command
 import com.jagrosh.jdautilities.command.CommandClient
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter
@@ -16,9 +15,8 @@ import kotlin.system.exitProcess
 
 class Reference {
     companion object {
-        const val experimental = false
-        const val botName = "Funnyman"
-        var version: String = "4.5"
+        const val experimental = true
+        var version: String = "4.6"
         val token = if (!experimental) Config().mainToken else Config().devToken
         val status = Activity.watching("V$version ${if (experimental) "Experimental" else ""}")
         val ownerID = "326489320980611075"
@@ -27,10 +25,13 @@ class Reference {
         var doTyping: Boolean = true //This determines if the bot will send a typing status on every command
 
         //Categories!
-        val convenienceCategory = Command.Category("Convenience")
-        val funCategory = Command.Category("Fun")
-        val utilityCategory = Command.Category("Utility")
-        val quickStringCategory = Command.Category("QuickStringCommands")
+        val convenienceCategory = KopyCategory("Convenience", "Convenience commands to make life easier")
+        val funCategory = KopyCategory("Fun", "Fun commands, meant to make you laugh or entertain you")
+        val utilityCategory = KopyCategory("Utility", "Commands mostly meant for advanced users or server owners.")
+        val quickStringCategory = KopyCategory(
+            "QuickStringCommands",
+            "These will send either send what you say, or send a custom message to replace yours.\nYou can add `embed` to any of these to make them show in an embed!"
+        )
         val categories = arrayOf(funCategory, convenienceCategory, utilityCategory, quickStringCategory)
 
         val mainPrefix = if (!experimental) "pp" else "dd"
@@ -45,6 +46,7 @@ class Reference {
         lateinit var cmdClient: CommandClient
         val everyMessageManager = EverythingListener()
         val feedChannelName = "funnyman-feed"
+        val bootTime = System.currentTimeMillis()
 
         var emergencyDisable = false //Disables EverythingListener
 
