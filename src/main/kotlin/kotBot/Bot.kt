@@ -63,7 +63,7 @@ class Bot {
             GuildSettingsCmd(),
             ShutdownCmd(),
             PartnerCmd(),
-
+            //AboutCmd(), TODO Finish aboutcmd
             )
         val slashCommands = mutableListOf<SlashCommand>(
             BanSlaCmd(),
