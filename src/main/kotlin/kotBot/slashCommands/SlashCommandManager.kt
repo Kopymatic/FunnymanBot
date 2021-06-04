@@ -10,9 +10,10 @@ class SlashCommandManager(commands: MutableList<SlashCommand>) : ListenerAdapter
     private val slashCommands: MutableList<SlashCommand> = commands
 
     fun setup() {
+        val guild = Reference.jda.getGuildById("793293945437814797")
         val commands = if (Reference.experimental) {
-            Reference.jda.getGuildById("654578321543266305") //Testing guild id
-                ?.updateCommands()
+            //Testing guild id
+            guild?.updateCommands()
         } else Reference.jda.updateCommands()
 
         // Moderation commands with required options
@@ -23,6 +24,7 @@ class SlashCommandManager(commands: MutableList<SlashCommand>) : ListenerAdapter
 
         // Send the new set of commands to discord, this will override any existing global commands with the new set provided here
         commands?.queue()
+        guild?.updateCommands()?.queue()
     }
 
     override fun onButtonClick(event: ButtonClickEvent) {
