@@ -4,6 +4,8 @@ import com.jagrosh.jdautilities.command.CommandEvent
 import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
+import net.dv8tion.jda.api.interactions.components.ActionRow
+import net.dv8tion.jda.api.interactions.components.Button
 
 class TestCmd : KopyCommand() {
     init {
@@ -15,17 +17,9 @@ class TestCmd : KopyCommand() {
     }
 
     override fun execute(event: CommandEvent?) {
-        val guilds = Reference.jda.guilds
-        for (guild in guilds) {
-            val ps = Reference.connection.prepareStatement(
-                """
-            INSERT INTO GuildSettings
-            VALUES(?, DEFAULT, NULL, DEFAULT);
-            """.trimIndent()
-            )
-            ps.setString(1, guild.id) //Set the first ? in the prepared statement to guildID
-            ps.executeUpdate()
-        }
+        if (event == null) return
+        event.channel.sendMessage("E").reference(event.message)
+            .setActionRows(ActionRow.of(Button.success(event.member.id, "joe mama"))).queue()
     }
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {

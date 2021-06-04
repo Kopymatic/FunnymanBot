@@ -21,7 +21,12 @@ abstract class KopyCommand : Command() {
         trackStats(event)
         val guildSettings = GuildSettings(event.guild.id)
         GlobalScope.launch {
+            val start = System.currentTimeMillis()
             onCommandRun(event, guildSettings)
+            val end = System.currentTimeMillis()
+            if ((end - start) > 10000) {
+                println("Execution of $name took longer than 10 seconds - took exactly ${end - start} ms")
+            }
         }
     }
 

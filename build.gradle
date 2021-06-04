@@ -8,22 +8,18 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+    maven { url 'https://m2.dv8tion.net/releases' }
+    maven { url 'https://jitpack.io' }
     jcenter()
-    maven {
-        name 'm2-dv8tion'
-        url 'https://m2.dv8tion.net/releases'
-    }
-    maven {
-        url "https://jitpack.io/"
-    }
 }
+
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib"
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
     compile 'com.jagrosh:jda-utilities:3.0.5'
-    compile 'net.dv8tion:JDA:4.2.1_253'
+    compile 'net.dv8tion:JDA:4.2.1_269'
     compile("ch.qos.logback:logback-classic:1.2.3")
     implementation 'org.postgresql:postgresql:42.2.19'
     implementation("com.github.minndevelopment:jda-ktx:${"1a45395"}")

@@ -145,7 +145,7 @@ abstract class QuickStringCommand: KopyCommand() {
             showUserByDefault = true
         }
 
-        override fun formatText(text: String): String {
+        public override fun formatText(text: String): String {
             var withSpaces = ""
             for (element in text) {
                 withSpaces += "$element "
@@ -164,7 +164,7 @@ abstract class QuickStringCommand: KopyCommand() {
             showUserByDefault = true
         }
 
-        override fun formatText(text: String): String {
+        public override fun formatText(text: String): String {
             return text
                 .replace("o ", "owo ")
                 .replace("O ", "OwO ")
@@ -193,7 +193,7 @@ abstract class QuickStringCommand: KopyCommand() {
             showUserByDefault = true
         }
 
-        override fun formatText(text: String): String {
+        public override fun formatText(text: String): String {
             var newText = ""
             val charList: MutableList<Char> = ArrayList()
             for (i in text.length downTo 1) {
@@ -218,7 +218,7 @@ abstract class QuickStringCommand: KopyCommand() {
             showUserByDefault = true
         }
 
-        override fun formatText(text: String): String {
+        public override fun formatText(text: String): String {
             var newText = ""
             val charList: MutableList<Char> = ArrayList()
             for (i in text.length downTo 1) {
@@ -259,10 +259,10 @@ abstract class QuickStringCommand: KopyCommand() {
             showUserByDefault = true
         }
 
-        override fun formatText(text: String): String {
+        public override fun formatText(text: String): String {
             val list = text.toList()
             var final = ""
-            list.sorted().forEach { currentChar -> final += currentChar}
+            list.sorted().forEach { currentChar -> final += currentChar }
             return final
         }
     }
@@ -277,7 +277,7 @@ abstract class QuickStringCommand: KopyCommand() {
             showUserByDefault = true
         }
 
-        override fun formatText(text: String): String {
+        public override fun formatText(text: String): String {
             val list = text.toList()
             var final = ""
             list.forEach { currentChar ->
@@ -311,7 +311,7 @@ abstract class QuickStringCommand: KopyCommand() {
             category = Reference.quickStringCategory
         }
 
-        override fun formatText(text: String): String {
+        public override fun formatText(text: String): String {
             val list = text.split(" ")
             var final = ":clap: "
             for (current in list) {
