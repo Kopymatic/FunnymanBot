@@ -131,9 +131,10 @@ abstract class LoveCommand : KopyCommand() {
         init {
             name = "Hug"
             help = "Hug someone!"
+            arguments = "[User as @mention]"
             reactionPercent = 40
             possibleReactions = arrayOf("U+2764", "U+1F49B")
-            category = Reference.funCategory
+            category = Reference.convenienceCategory
         }
 
         override var actionIdentifier: String = "hugg"
@@ -192,8 +193,9 @@ abstract class LoveCommand : KopyCommand() {
         init {
             name = "Kiss"
             help = "Kiss someone!"
+            arguments = "[User as @mention]"
             reactionPercent = 60
-            category = Reference.funCategory
+            category = Reference.convenienceCategory
         }
 
         override var actionIdentifier: String = "kiss"
@@ -232,9 +234,10 @@ abstract class LoveCommand : KopyCommand() {
     class Cuddle : LoveCommand() {
         init {
             name = "Cuddle"
+            arguments = "[User as @mention]"
             help = "Cuddle someone!"
             reactionPercent = 85
-            category = Reference.funCategory
+            category = Reference.convenienceCategory
         }
 
         override var actionIdentifier: String = "cudd"

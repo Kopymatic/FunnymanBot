@@ -45,7 +45,8 @@ class HelpCmd : KopyCommand() {
         for (i in categories.indices) {
             val eb = EmbedBuilder()
                 .setColor(guildSettings.defaultColor)
-                .setTitle(categories[i].name)
+                .setTitle("${event.selfMember.effectiveName} Commands")
+                .setDescription("Category: **${categories[i].name}**\n*${categories[i].description}*")
                 .setFooter("Use " + mainPrefix + "help [command] to get additional info for commands.")
             categoryEmbeds[i] = eb
         }

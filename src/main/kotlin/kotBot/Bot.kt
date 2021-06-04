@@ -5,6 +5,10 @@ import kotBot.commands.`fun`.*
 import kotBot.commands.convenience.*
 import kotBot.commands.util.*
 import kotBot.cookieClicker.GetCookieCmd
+import kotBot.slashCommands.SlashCommand
+import kotBot.slashCommands.SlashCommandManager
+import kotBot.slashCommands.convenience.*
+import kotBot.slashCommands.util.ButtonExampleSlaCmd
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
@@ -60,6 +64,22 @@ class Bot {
             PartnerCmd(),
             GetCookieCmd(),
         )
+            //AboutCmd(), TODO Finish aboutcmd
+            )
+        val slashCommands = mutableListOf<SlashCommand>(
+//            BanSlaCmd(),
+            SaySlaCmd(),
+//            LeaveSlaCmd(),
+//            PruneSlaCmd(),
+            ButtonExampleSlaCmd(),
+            AddSpacesSlaCmd(),
+            OwoifierSlaCmd(),
+            ScramblerSlaCmd(),
+            ReverserSlaCmd(),
+            AlphabetizerSlaCmd(),
+            RandomCapsSlaCmd(),
+            AddClapSlaCmd(),
+        )
     }
 
     fun createBot(token: String) {
@@ -85,10 +105,17 @@ class Bot {
             GatewayIntent.GUILD_MESSAGE_REACTIONS,
             GatewayIntent.DIRECT_MESSAGE_TYPING,
             GatewayIntent.GUILD_MESSAGE_TYPING,
-            GatewayIntent.GUILD_EMOJIS
+            GatewayIntent.GUILD_EMOJIS,
         )
             .disableCache(CacheFlag.VOICE_STATE)
             .addEventListeners(Reference.waiter, Reference.cmdClient, Reference.everyMessageManager)
             .build()
+
+        Reference.jda.awaitReady()
+
+        Reference.slashCommandManager = SlashCommandManager(slashCommands)
+        Reference.jda.addEventListener(Reference.slashCommandManager)
+        Reference.slashCommandManager.setup()
+
     }
 }
