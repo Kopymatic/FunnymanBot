@@ -6,10 +6,8 @@ import kotBot.commands.convenience.*
 import kotBot.commands.util.*
 import kotBot.slashCommands.SlashCommand
 import kotBot.slashCommands.SlashCommandManager
-import kotBot.slashCommands.convenience.SaySlaCmd
-import kotBot.slashCommands.util.BanSlaCmd
-import kotBot.slashCommands.util.LeaveSlaCmd
-import kotBot.slashCommands.util.PruneSlaCmd
+import kotBot.slashCommands.convenience.*
+import kotBot.slashCommands.util.ButtonExampleSlaCmd
 import kotBot.utils.Reference
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.requests.GatewayIntent
@@ -66,10 +64,18 @@ class Bot {
             //AboutCmd(), TODO Finish aboutcmd
             )
         val slashCommands = mutableListOf<SlashCommand>(
-            BanSlaCmd(),
+//            BanSlaCmd(),
             SaySlaCmd(),
-            LeaveSlaCmd(),
-            PruneSlaCmd(),
+//            LeaveSlaCmd(),
+//            PruneSlaCmd(),
+            ButtonExampleSlaCmd(),
+            AddSpacesSlaCmd(),
+            OwoifierSlaCmd(),
+            ScramblerSlaCmd(),
+            ReverserSlaCmd(),
+            AlphabetizerSlaCmd(),
+            RandomCapsSlaCmd(),
+            AddClapSlaCmd(),
         )
     }
 

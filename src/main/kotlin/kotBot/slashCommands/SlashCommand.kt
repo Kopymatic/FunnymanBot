@@ -12,6 +12,7 @@ abstract class SlashCommand {
 
     //This will send a <Bot> is thinking... message in chat that will be updated later through either InteractionHook.editOriginal(String) or InteractionHook.sendMessage(String).
     var sendEphemeral = false
+    var isGlobal = true
 
     abstract fun onRunEvent(event: SlashCommandEvent)
 

@@ -16,21 +16,25 @@ class SlashCommandManager(commands: MutableList<SlashCommand>) : ListenerAdapter
             guild?.updateCommands()
         } else Reference.jda.updateCommands()
 
+        println("Commands added: ")
         // Moderation commands with required options
         for (command in slashCommands) {
-            println("Command ${command.name} added")
+            if (!Reference.experimental && !command.isGlobal) continue
             commands?.addCommands(command.commandData)
+            print("${command.name}, ")
         }
 
         // Send the new set of commands to discord, this will override any existing global commands with the new set provided here
         commands?.queue()
-        guild?.updateCommands()?.queue()
+        //if(Reference.experimental) guild?.updateCommands()?.queue() else Reference.jda.updateCommands().queue()
+
+        if (Reference.experimental) Reference.jda.updateCommands().queue() //Clear global commands
     }
 
     override fun onButtonClick(event: ButtonClickEvent) {
         for (command in slashCommands) {
-            if (!command.hasButtons) return
-            if (event.componentId.startsWith(command.name)) {
+            if (!command.hasButtons) continue
+            if (event.componentId.startsWith(command.getButtonIDPrefix())) {
                 command.onButtonPressEvent(event)
                 return
             }
