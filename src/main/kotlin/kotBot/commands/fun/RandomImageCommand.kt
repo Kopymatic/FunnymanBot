@@ -417,7 +417,7 @@ class NoContextCmd : RandomImageCommand() {
     init {
         name = "NoContext"
         aliases = arrayOf("nc")
-        help = "Shows a random no context image from the group chat"
+        help = "Shows a random no context image that was imported to the database"
         arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
         dbTableName = "NoContext"
         footers = arrayOf("Laugh. Now.", "laugh! >:(", "nice meme, very poggers")
@@ -429,7 +429,7 @@ class PeopleCmd : RandomImageCommand() {
     init {
         name = "People"
         aliases = arrayOf("me", "ppl")
-        help = "Shows a random person"
+        help = "Shows a random person that was imported to the database"
         arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
         dbTableName = "People"
         footers =
@@ -442,7 +442,7 @@ class PetCmd : RandomImageCommand() {
     init {
         name = "Pet"
         aliases = arrayOf("dog", "cat")
-        help = "Shows a random pet"
+        help = "Shows a random pet that was imported to the database"
         arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
         dbTableName = "Pets"
         footers = arrayOf(
@@ -458,7 +458,7 @@ class PetCmd : RandomImageCommand() {
 class MemeCmd : RandomImageCommand() {
     init {
         name = "Meme"
-        help = "Shows a random meme"
+        help = "Shows a random meme that was imported to the database"
         arguments = "Do ${Reference.mainPrefix}help ${this.name} for advanced help."
         dbTableName = "Memes"
         footers = arrayOf("haha funny", "nice meme, very poggers", "laugh! >:(")
