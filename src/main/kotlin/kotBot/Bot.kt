@@ -5,7 +5,6 @@ import kotBot.commands.`fun`.*
 import kotBot.commands.convenience.*
 import kotBot.commands.util.*
 import kotBot.cookieClicker.GetCookieCmd
-import kotBot.slashCommands.SlashCommand
 import kotBot.slashCommands.SlashCommandManager
 import kotBot.slashCommands.convenience.*
 import kotBot.slashCommands.util.ButtonExampleSlaCmd
@@ -64,9 +63,9 @@ class Bot {
             PartnerCmd(),
             GetCookieCmd(),
         )
-            //AboutCmd(), TODO Finish aboutcmd
-            )
-        val slashCommands = mutableListOf<SlashCommand>(
+
+        //AboutCmd(), TODO Finish aboutcmd
+        val slashCommands = mutableListOf(
 //            BanSlaCmd(),
             SaySlaCmd(),
 //            LeaveSlaCmd(),

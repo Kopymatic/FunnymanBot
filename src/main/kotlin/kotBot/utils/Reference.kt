@@ -33,14 +33,9 @@ class Reference {
             "QuickStringCommands",
             "These will send either send what you say, or send a custom message to replace yours.\nYou can add `embed` to any of these to make them show in an embed!"
         )
-        val categories = arrayOf(funCategory, convenienceCategory, utilityCategory, quickStringCategory)
-        val convenienceCategory = Command.Category("Convenience")
-        val funCategory = Command.Category("Fun")
-        val utilityCategory = Command.Category("Utility")
-        val cookieClickerCategory = Command.Category("CookieClicker")
-        val quickStringCategory = Command.Category("QuickStringCommands")
+        val cookieClickerCategory = KopyCategory("CookieClicker", "Commands related to Cookie Clicker")
         val categories =
-            arrayOf(funCategory, convenienceCategory, utilityCategory, cookieClickerCategory, quickStringCategory)
+            arrayOf(funCategory, cookieClickerCategory, convenienceCategory, utilityCategory, quickStringCategory)
 
         val mainPrefix = if (!experimental) "pp" else "dd"
         val alternativePrefix = if (!experimental) "p!" else "d!"
