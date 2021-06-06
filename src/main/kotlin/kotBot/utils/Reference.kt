@@ -3,6 +3,7 @@ package kotBot.utils
 import com.jagrosh.jdautilities.command.CommandClient
 import com.jagrosh.jdautilities.command.CommandEvent
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter
+import kotBot.slashCommands.SlashCommandManager
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.entities.Activity
 import java.awt.Color
@@ -16,7 +17,7 @@ import kotlin.system.exitProcess
 class Reference {
     companion object {
         const val experimental = true
-        var version: String = "4.6"
+        var version: String = "5"
         val token = if (!experimental) Config().mainToken else Config().devToken
         val status = Activity.watching("V$version ${if (experimental) "Experimental" else ""}")
         val ownerID = "326489320980611075"
@@ -42,6 +43,7 @@ class Reference {
 
         val connection = connect()
         lateinit var jda: JDA
+        lateinit var slashCommandManager: SlashCommandManager
         val waiter: EventWaiter = EventWaiter()
         lateinit var cmdClient: CommandClient
         val everyMessageManager = EverythingListener()
