@@ -3,7 +3,8 @@ package kotBot.cookieClicker
 import kotBot.utils.Reference
 import java.math.BigInteger
 
-class ClickerProfile {
+class ClickerProfile
+    (val userID: String) {
     private val cursor: UserBuilding
     private val grandma: UserBuilding
     private val farm: UserBuilding
@@ -24,9 +25,8 @@ class ClickerProfile {
     private val idleverse: UserBuilding
     var cookies: BigInteger = BigInteger("0")
     var lastKnownUserName: String?
-    val userID: String
 
-    constructor(userID: String) {
+    init {
         val ps = Reference.connection.prepareStatement(
             """
             SELECT * FROM ClickerUsers WHERE userID = ?
@@ -61,7 +61,6 @@ class ClickerProfile {
         idleverse = UserBuilding(ClickerReference.idleverse, userID, rs)
         cookies = BigInteger(rs.getString("cookies"))
         lastKnownUserName = rs.getString("lastKnownUsername")
-        this.userID = userID
     }
 
     /**

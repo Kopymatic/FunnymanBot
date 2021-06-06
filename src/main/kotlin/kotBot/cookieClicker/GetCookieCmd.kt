@@ -6,7 +6,6 @@ import dev.minn.jda.ktx.await
 import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
-import kotBot.utils.replyWithReference
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.entities.Message
@@ -18,13 +17,12 @@ class GetCookieCmd : KopyCommand() {
     init {
         name = "GetCookie"
         aliases = arrayOf("c")
-        arguments = ""
         help = "Gives you a cookie"
         category = Reference.cookieClickerCategory
     }
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
-        val cProfile = ClickerProfile(event.member.id)
+        var cProfile = ClickerProfile(event.member.id)
         cProfile.cookies += BigInteger("1")
         println(cProfile.cookies)
         cProfile.push()
@@ -37,29 +35,32 @@ class GetCookieCmd : KopyCommand() {
             GlobalScope.launch {
                 message.addReaction("✅").queue()
                 message.addReaction("❌").queue()
-                val reactEvent = event.jda.await<GuildMessageReactionAddEvent> {
-                    (it.reaction.reactionEmote.name == "✅" || it.reaction.reactionEmote.name == "❌")
-                            && (it.member.id == "326489320980611075") && (it.messageId == message.id)
-                }
-                reactEvent.retrieveMessage().queue { reactedMessage: Message ->
-                    when (reactEvent.reactionEmote.name) {
-                        "✅" -> {
-                            val embed = reactedMessage.embeds[0]
-                            cProfile.cookies += BigInteger("1")
-                            reactedMessage.editMessage(Embed {
-                                title = "Cookies ${cProfile.cookies}"
-                                description = embed.description
-                                color = embed.colorRaw
-                            }).queue()
-                            cProfile.push()
-                            event.reply("+1 cookie! (now ${cProfile.cookies}")
-                        }
-                        "❌" -> {
-                            reactedMessage.delete().reason("Rejected").queue()
-                            event.replyWithReference("Your suggestion was denied", true)
+                var reaction = ""
+                do {
+                    val reactEvent = event.jda.await<GuildMessageReactionAddEvent> {
+                        (it.reaction.reactionEmote.name == "✅" || it.reaction.reactionEmote.name == "❌")
+                                && (it.member.id == event.member.id) && (it.messageId == message.id)
+                    }
+                    reactEvent.retrieveMessage().queue { reactedMessage: Message ->
+                        reaction = reactEvent.reactionEmote.name
+                        when (reaction) {
+                            "✅" -> {
+                                val embed = reactedMessage.embeds[0]
+                                cProfile.cookies += BigInteger("1")
+                                reactedMessage.editMessage(Embed {
+                                    title = "Cookies ${cProfile.cookies}"
+                                    description = embed.description
+                                    color = embed.colorRaw
+                                }).queue()
+                                cProfile = cProfile.getRefreshed()
+
+                            }
                         }
                     }
-                }
+                } while (reaction != "❌")
+                message.clearReactions()
+
+
             }
         }
     }
