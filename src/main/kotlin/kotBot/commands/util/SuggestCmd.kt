@@ -38,7 +38,7 @@ class SuggestCmd : KopyCommand() {
         })?.queue { message: Message ->
             message.addReaction("✅").queue()
             message.addReaction("❌").queue()
-            event.replyWithReference("Your suggestion has been successfully posted! Now just wait for it to be accepted or rejected.")
+            event.replyWithReference("Your suggestion has been successfully posted!")
             GlobalScope.launch {
                 val reactEvent = event.jda.await<GuildMessageReactionAddEvent> {
                     (it.reaction.reactionEmote.name == "✅" || it.reaction.reactionEmote.name == "❌")
@@ -53,11 +53,9 @@ class SuggestCmd : KopyCommand() {
                                 description = embed.description
                                 color = Color.green.rgb
                             }).queue()
-                            event.replyWithReference("Your suggestion was approved!")
                         }
                         "❌" -> {
                             reactedMessage.delete().reason("Rejected").queue()
-                            event.replyWithReference("Your suggestion was denied", true)
                         }
                     }
                 }
