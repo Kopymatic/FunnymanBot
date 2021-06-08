@@ -62,7 +62,9 @@ class Bot {
             ShutdownCmd(),
             PartnerCmd(),
             //AboutCmd(), TODO Finish aboutcmd
-            )
+            EmojiInfoCmd(),
+        )
+
         val slashCommands = mutableListOf<SlashCommand>(
 //            BanSlaCmd(),
             SaySlaCmd(),
