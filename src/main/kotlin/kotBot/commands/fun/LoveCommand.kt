@@ -86,7 +86,7 @@ abstract class LoveCommand : KopyCommand() {
             val rs = ps.executeQuery()
 
             val timesPerformed: Int
-            if(rs.next()) {
+            if (rs.next()) {
                 timesPerformed = rs.getInt("TimesPerformed") + 1
                 ps = connection.prepareStatement(
                     "UPDATE LoveCommands " +
@@ -116,7 +116,7 @@ abstract class LoveCommand : KopyCommand() {
                     footerText = "That's ${"%,d".format(timesPerformed)} $embedFooterText now!"
                 )
             ).queue { message: Message ->
-                if(Random().nextInt(100) < reactionPercent) {
+                if (Random().nextInt(100) < reactionPercent) {
                     message.addReaction(
                         possibleReactions[Random().nextInt(possibleReactions.size)]
                     ).queue()
@@ -185,7 +185,9 @@ abstract class LoveCommand : KopyCommand() {
             "https://media1.tenor.com/images/c9e2e21f4eedd767a72004e4ab521c9d/tenor.gif?itemid=13576064",
             "https://media1.tenor.com/images/949d3eb3f689fea42258a88fa171d4fc/tenor.gif",
             "https://media1.tenor.com/images/6b87bf15500fe0b8608d9ef9e00d639c/tenor.gif",
-            "https://media1.tenor.com/images/b545981037e7a3031eb54eb2dca9182e/tenor.gif"
+            "https://media1.tenor.com/images/b545981037e7a3031eb54eb2dca9182e/tenor.gif",
+            "https://c.tenor.com/o1jezAk92FUAAAAM/sound-euphonium-hug.gif",
+            "https://media1.tenor.com/images/d97dfc7a43aadcf42ee2f84aa1004675/tenor.gif?itemid=14268001"
         )
     }
 
@@ -241,8 +243,8 @@ abstract class LoveCommand : KopyCommand() {
         }
 
         override var actionIdentifier: String = "cudd"
-        override var embedTitleText: String = "cuddles"
-        override var embedFooterText: String = embedTitleText
+        override var embedTitleText: String = "cuddles with"
+        override var embedFooterText: String = "cuddles"
         override var gifs: Array<String> = arrayOf(
             "https://c.tenor.com/yghabkhR3dIAAAAj/goodnight-couple.gif",
             "https://media1.tenor.com/images/3264bcc47ee47ebbdd441f9f1d203542/tenor.gif?itemid=12498539",
@@ -272,6 +274,31 @@ abstract class LoveCommand : KopyCommand() {
             "https://media1.tenor.com/images/0ccd912ac62159482be3fa6c1024c9a8/tenor.gif?itemid=13354472",
             "https://media1.tenor.com/images/38560c81435e6ec0251f78e38b6dfcc2/tenor.gif?itemid=14232718",
             "https://media1.tenor.com/images/11f864ac2ac3c7ae094308f0d16495e9/tenor.gif?itemid=12554159"
+        )
+    }
+
+    class HandHold : LoveCommand() {
+        init {
+            name = "HandHold"
+            aliases = arrayOf("hh")
+            arguments = "[User as @mention]"
+            help = "Hold hands with someone!"
+            reactionPercent = 70
+            category = Reference.convenienceCategory
+        }
+
+        override var actionIdentifier: String = "hand"
+        override var embedTitleText: String = "holds hands with"
+        override var embedFooterText: String = "handholds"
+        override var gifs: Array<String> = arrayOf(
+            "https://media1.tenor.com/images/35e3585c35c691d817f143b514ec2384/tenor.gif?itemid=20022947", //might wanna remove
+            "https://media1.tenor.com/images/1e678d900b77f14b49daf344fb1361c9/tenor.gif?itemid=12709674",
+            "https://media1.tenor.com/images/7a3376ba69891b79fe45aeb7752227ac/tenor.gif?itemid=15160073",
+            "https://media1.tenor.com/images/73eaea88d9b2f191bbed563192d7efb1/tenor.gif?itemid=14588244",
+            "https://media1.tenor.com/images/8f12cd8b6adb7492e9b88cd0b7299728/tenor.gif?itemid=13071752",
+            "https://media1.tenor.com/images/df9fee0a73c2a41a52b1376154ebf77d/tenor.gif?itemid=11646674",
+            "https://media1.tenor.com/images/f6c89d812e889725076f09e05f9afd80/tenor.gif?itemid=13907324",
+            "https://media1.tenor.com/images/34ee855c9461dbd1f6d1f778637a134c/tenor.gif?itemid=5615947",
         )
     }
 }

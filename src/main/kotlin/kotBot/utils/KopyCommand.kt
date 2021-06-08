@@ -7,10 +7,18 @@ import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
+import java.util.*
 
 abstract class KopyCommand : Command() {
+    companion object {
+        val times: Queue<Int> = LinkedList()
+        var commandsRun: Int = 0
+    }
+
     val connection = Reference.connection
     var doTyping = true
+    var logStatement: String? = null
+
     /**
      * -- DO NOT OVERRIDE --
      * Use onCommandRun instead
@@ -24,10 +32,16 @@ abstract class KopyCommand : Command() {
             val start = System.currentTimeMillis()
             onCommandRun(event, guildSettings)
             val end = System.currentTimeMillis()
-            if ((end - start) > 10000) {
-                println("Execution of $name took longer than 10 seconds - took exactly ${end - start} ms")
+            times.add((end - start).toInt())
+            if (times.size > 100) { //So the size never exceeds 100
+                times.poll() //so we dont get an exception if it is somehow empty
             }
+            if (end - start > 50 || Reference.experimental) {
+                println("$name took ${end - start}ms to run${if (logStatement != null) " | $logStatement" else ""}")
+            }
+            logStatement = null
         }
+        commandsRun++
     }
 
     /**
