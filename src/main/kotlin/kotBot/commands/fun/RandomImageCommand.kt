@@ -30,6 +30,10 @@ abstract class RandomImageCommand : KopyCommand() {
     protected lateinit var event: CommandEvent
     private lateinit var guildSettings: GuildSettings
 
+    init {
+        doTyping = false
+    }
+
     /**
      * Default behavior - can be overridden
      */
@@ -180,6 +184,7 @@ abstract class RandomImageCommand : KopyCommand() {
     }
 
     private fun send() {
+        event.channel.sendTyping().queue()
         val ps1 = connection.prepareStatement("SELECT MAX(id) FROM ${this.dbTableName}")
         val rs1 = ps1.executeQuery()
         rs1.next()

@@ -28,6 +28,7 @@ class Bot {
             LoveCommand.Hug(),
             LoveCommand.Kiss(),
             LoveCommand.Cuddle(),
+            LoveCommand.HandHold(),
             EmbedCmd(),
             DayTrackerCmd(),
             ChooseCmd(),
@@ -61,6 +62,8 @@ class Bot {
             GuildSettingsCmd(),
             ShutdownCmd(),
             PartnerCmd(),
+            AboutCmd(),
+            EmojiInfoCmd(),
             GetCookieCmd(),
         )
 
