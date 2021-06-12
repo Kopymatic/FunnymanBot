@@ -5,6 +5,7 @@ import kotBot.commands.`fun`.*
 import kotBot.commands.convenience.*
 import kotBot.commands.util.*
 import kotBot.cookieClicker.GetCookieCmd
+import kotBot.cookieClicker.ShopCmd
 import kotBot.slashCommands.SlashCommandManager
 import kotBot.slashCommands.convenience.*
 import kotBot.slashCommands.util.ButtonExampleSlaCmd
@@ -64,7 +65,10 @@ class Bot {
             PartnerCmd(),
             AboutCmd(),
             EmojiInfoCmd(),
+
+            //Cookie Clicker Commands
             GetCookieCmd(),
+            ShopCmd()
         )
 
         //AboutCmd(), TODO Finish aboutcmd

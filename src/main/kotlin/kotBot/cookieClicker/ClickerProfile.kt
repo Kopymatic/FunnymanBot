@@ -5,26 +5,27 @@ import java.math.BigInteger
 
 class ClickerProfile
     (val userID: String) {
-    private val cursor: UserBuilding
-    private val grandma: UserBuilding
-    private val farm: UserBuilding
-    private val mine: UserBuilding
-    private val factory: UserBuilding
-    private val bank: UserBuilding
-    private val temple: UserBuilding
-    private val wizardTower: UserBuilding
-    private val shipment: UserBuilding
-    private val alchemyLab: UserBuilding
-    private val portal: UserBuilding
-    private val timeMachine: UserBuilding
-    private val antimatterCondenser: UserBuilding
-    private val prism: UserBuilding
-    private val chancemaker: UserBuilding
-    private val fractalEngine: UserBuilding
-    private val javascriptConsole: UserBuilding
-    private val idleverse: UserBuilding
+    val cursor: UserBuilding
+    val grandma: UserBuilding
+    val farm: UserBuilding
+    val mine: UserBuilding
+    val factory: UserBuilding
+    val bank: UserBuilding
+    val temple: UserBuilding
+    val wizardTower: UserBuilding
+    val shipment: UserBuilding
+    val alchemyLab: UserBuilding
+    val portal: UserBuilding
+    val timeMachine: UserBuilding
+    val antimatterCondenser: UserBuilding
+    val prism: UserBuilding
+    val chancemaker: UserBuilding
+    val fractalEngine: UserBuilding
+    val javascriptConsole: UserBuilding
+    val idleverse: UserBuilding
     var cookies: BigInteger = BigInteger("0")
     var lastKnownUserName: String?
+    val buildings: List<UserBuilding>
 
     init {
         val ps = Reference.connection.prepareStatement(
@@ -61,6 +62,26 @@ class ClickerProfile
         idleverse = UserBuilding(ClickerReference.idleverse, userID, rs)
         cookies = BigInteger(rs.getString("cookies"))
         lastKnownUserName = rs.getString("lastKnownUsername")
+        buildings = listOf(
+            cursor,
+            grandma,
+            farm,
+            mine,
+            factory,
+            bank,
+            temple,
+            wizardTower,
+            shipment,
+            alchemyLab,
+            portal,
+            timeMachine,
+            antimatterCondenser,
+            prism,
+            chancemaker,
+            fractalEngine,
+            javascriptConsole,
+            idleverse
+        )
     }
 
     /**
@@ -133,10 +154,18 @@ class ClickerProfile
         ps.setInt(20, idleverse.amount)
         ps.setString(21, userID)
         ps.executeUpdate()
-
     }
 
     fun getRefreshed(): ClickerProfile {
         return ClickerProfile(userID)
+    }
+
+    fun getUserBuildingByName(name: String): UserBuilding {
+        for (building in buildings) {
+            if (name == building.building.name) {
+                return building
+            }
+        }
+        throw Exception("Building name not known!")
     }
 }

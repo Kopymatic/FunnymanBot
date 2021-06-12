@@ -1,5 +1,6 @@
 package kotBot.cookieClicker
 
+import java.math.BigDecimal
 import java.math.BigInteger
 import java.sql.ResultSet
 import kotlin.math.pow
@@ -16,13 +17,11 @@ class UserBuilding {
     }
 
     fun getCost(): BigInteger {
-        return BigInteger(
-            (building.baseCost?.times(
-                BigInteger(
-                    ClickerReference.costMultiplier.pow(amount).toString()
-                )
-            )).toString()
-        )
+        val toMulitplyBy = BigDecimal(ClickerReference.costMultiplier.pow(amount).toString())
+        val toBeMuliplied = building.baseCost?.toBigDecimal()
+
+        val toBeRounded = toBeMuliplied?.times(toMulitplyBy)
+        return toBeRounded!!.toBigIntegerExact()
     }
 
     fun getMultiCost(amountToBuy: Int): BigInteger {
