@@ -5,6 +5,7 @@ import dev.minn.jda.ktx.Embed
 import kotBot.utils.GuildSettings
 import kotBot.utils.KopyCommand
 import kotBot.utils.Reference
+import net.dv8tion.jda.api.entities.Emoji
 import net.dv8tion.jda.api.interactions.components.ActionRow
 import net.dv8tion.jda.api.interactions.components.Button
 
@@ -25,10 +26,16 @@ class AboutCmd : KopyCommand() {
             for (time in times) {
                 avg += time
             }
-            avg / times.size
+            avg /= times.size
         } catch (e: ArithmeticException) {
             avg = 0
         }
+
+        val twitter = event.jda.getEmoteById("853144562179637328")
+        val youtube = event.jda.getEmoteById("853144562516492308")
+        val discord = event.jda.getEmoteById("853144562222104596")
+        val github = event.jda.getEmoteById("853144562201133066")
+
 
         event.channel.sendMessage(
             Embed(
@@ -38,7 +45,7 @@ class AboutCmd : KopyCommand() {
                 fields = arrayListOf(
                     makeField(
                         "Uptime",
-                        if (secondsRun / 60 > 60) "${secondsRun / 60 / 60} hours, ${secondsRun / 60} minutes, ${secondsRun % 60} seconds" else if (secondsRun > 60) "${secondsRun / 60} minutes, ${secondsRun % 60} seconds" else "$secondsRun seconds"
+                        if (secondsRun / 60 > 60) "${secondsRun / 60 / 60} hours, ${(secondsRun % 60) / 60} minutes, ${secondsRun % 60} seconds" else if (secondsRun > 60) "${secondsRun / 60} minutes, ${secondsRun % 60} seconds" else "$secondsRun seconds"
                     ),
                     makeField("Commands Run", "$commandsRun"),
                     makeField("Average Command Run Time", "${if (avg > 0) "$avg" else "N/A"}ms")
@@ -46,12 +53,14 @@ class AboutCmd : KopyCommand() {
             )
         ).setActionRows(
             ActionRow.of( //TODO potentially add emojis
-                Button.link("https://twitter.com/Kopymatic", "Twitter"),
+                Button.link("https://twitter.com/Kopymatic", "Twitter").withEmoji(Emoji.fromEmote(twitter!!)),
                 Button.link("https://www.youtube.com/channel/UCF5_Evvi_JP-j12t-8YbOEA/", "Youtube")
+                    .withEmoji(Emoji.fromEmote(youtube!!))
             ),
             ActionRow.of(
-                Button.link("https://discord.gg/YBcveMYeDU", "Discord Server"),
-                Button.link("https://github.com/Kopymatic/FunnymanBot", "I'm open source!")
+                Button.link("https://discord.gg/YBcveMYeDU", "Discord").withEmoji(Emoji.fromEmote(discord!!)),
+                Button.link("https://github.com/Kopymatic/FunnymanBot", "Source Code")
+                    .withEmoji(Emoji.fromEmote(github!!))
             )
         ).queue()
     }

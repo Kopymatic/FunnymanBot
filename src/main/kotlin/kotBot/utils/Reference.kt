@@ -17,7 +17,7 @@ import kotlin.system.exitProcess
 class Reference {
     companion object {
         const val experimental = true
-        var version: String = "5.1"
+        var version: String = "5.2"
         val token = if (!experimental) Config().mainToken else Config().devToken
         val status = Activity.watching("V$version ${if (experimental) "Experimental" else ""}")
         val ownerID = "326489320980611075"

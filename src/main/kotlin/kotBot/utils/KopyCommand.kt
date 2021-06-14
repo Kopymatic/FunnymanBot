@@ -5,6 +5,7 @@ import com.jagrosh.jdautilities.command.CommandEvent
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.entities.ChannelType
 import net.dv8tion.jda.api.entities.Message
 import net.dv8tion.jda.api.entities.MessageEmbed
 import java.util.*
@@ -27,7 +28,8 @@ abstract class KopyCommand : Command() {
         if (event == null) return
         if (Reference.doTyping && this.doTyping) event.channel.sendTyping().queue()
         trackStats(event)
-        val guildSettings = GuildSettings(event.guild.id)
+        val guildSettings =
+            if (event.channelType != ChannelType.PRIVATE) GuildSettings(event.guild.id) else GuildSettings()
         GlobalScope.launch {
             val start = System.currentTimeMillis()
             onCommandRun(event, guildSettings)
@@ -36,7 +38,7 @@ abstract class KopyCommand : Command() {
             if (times.size > 100) { //So the size never exceeds 100
                 times.poll() //so we dont get an exception if it is somehow empty
             }
-            if (end - start > 50 || Reference.experimental) {
+            if (end - start > 500 || Reference.experimental) {
                 println("$name took ${end - start}ms to run${if (logStatement != null) " | $logStatement" else ""}")
             }
             logStatement = null
