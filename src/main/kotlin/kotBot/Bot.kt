@@ -1,6 +1,7 @@
 package kotBot
 
 import com.jagrosh.jdautilities.command.CommandClientBuilder
+import dev.minn.jda.ktx.injectKTX
 import kotBot.commands.`fun`.*
 import kotBot.commands.convenience.*
 import kotBot.commands.util.*
@@ -115,6 +116,7 @@ class Bot {
         )
             .disableCache(CacheFlag.VOICE_STATE)
             .addEventListeners(Reference.waiter, Reference.cmdClient, Reference.everyMessageManager)
+            .injectKTX()
             .build()
 
         Reference.jda.awaitReady()

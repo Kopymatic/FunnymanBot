@@ -5,14 +5,11 @@ import java.math.BigInteger
 import java.sql.ResultSet
 import kotlin.math.pow
 
-class UserBuilding {
-    val building: Building
-    val userID: String
+class UserBuilding(val building: Building, userId: String, rs: ResultSet) {
+    val userID: String = userId
     var amount: Int = 0
 
-    constructor(building: Building, userId: String, rs: ResultSet) {
-        this.building = building
-        this.userID = userId
+    init {
         amount = rs.getInt(building.dbColumnName)
     }
 
@@ -21,14 +18,22 @@ class UserBuilding {
         val toBeMuliplied = building.baseCost?.toBigDecimal()
 
         val toBeRounded = toBeMuliplied?.times(toMulitplyBy)
-        return toBeRounded!!.toBigIntegerExact()
+        return toBeRounded!!.toBigInteger()
+    }
+
+    fun getCost(hypotheticalAmount: Int): BigInteger {
+        val toMulitplyBy = BigDecimal(ClickerReference.costMultiplier.pow(hypotheticalAmount).toString())
+        val toBeMuliplied = building.baseCost?.toBigDecimal()
+
+        val toBeRounded = toBeMuliplied?.times(toMulitplyBy)
+        return toBeRounded!!.toBigInteger()
     }
 
     fun getMultiCost(amountToBuy: Int): BigInteger {
         var cost = BigInteger("0")
         var hypotheticalAmount = amount
         for (i in amountToBuy downTo 1) {
-            cost += getCost()
+            cost += getCost(hypotheticalAmount)
             hypotheticalAmount++
         }
         return cost
@@ -74,21 +79,21 @@ open class Building(name: String, cost: BigInteger?, cps: Double, dbColumnName: 
         this.dbColumnName = dbColumnName
     }
 
-    constructor(name: String, cost: String?, cps: Double, dbColumnName: String) : this(
+    constructor(name: String, cost: String, cps: Double, dbColumnName: String) : this(
         name,
         BigInteger(cost),
         cps,
         dbColumnName
     )
 
-    constructor(name: String, cost: String?, cps: Int, dbColumnName: String) : this(
+    constructor(name: String, cost: String, cps: Int, dbColumnName: String) : this(
         name,
         BigInteger(cost),
         cps.toDouble(),
         dbColumnName
     )
 
-    constructor(name: String, cost: String?, cps: Long, dbColumnName: String) : this(
+    constructor(name: String, cost: String, cps: Long, dbColumnName: String) : this(
         name,
         BigInteger(cost),
         cps.toDouble(),

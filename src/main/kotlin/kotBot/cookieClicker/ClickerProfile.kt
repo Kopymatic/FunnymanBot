@@ -1,5 +1,6 @@
 package kotBot.cookieClicker
 
+import com.jagrosh.jdautilities.command.CommandEvent
 import kotBot.utils.Reference
 import java.math.BigInteger
 
@@ -91,7 +92,7 @@ class ClickerProfile
         val ps = Reference.connection.prepareStatement(
             """
             INSERT INTO ClickerUsers 
-            VALUES (userID = ?, lastKnownUsername = ?);
+            VALUES (?, ?);
         """.trimIndent()
         )
         ps.setString(1, userID)
@@ -167,5 +168,15 @@ class ClickerProfile
             }
         }
         throw Exception("Building name not known!")
+    }
+
+    fun updateLastUsername(event: CommandEvent) {
+        this.lastKnownUserName = event.member.user.name
+        this.push()
+    }
+
+    fun updateLastUsername(name: String) {
+        this.lastKnownUserName = name
+        this.push()
     }
 }
