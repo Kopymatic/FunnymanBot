@@ -52,6 +52,10 @@ data class GuildSettings(
         }
     )
 
+    constructor() : this(
+        "000000000000000000", Color(255, 111, 255), mutableListOf(""), false, false, false //Defaults
+    )
+
     fun push() {
         val ps = Reference.connection.prepareStatement(
             """
