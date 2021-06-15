@@ -22,7 +22,7 @@ dependencies {
     compile 'net.dv8tion:JDA:4.2.1_269'
     compile("ch.qos.logback:logback-classic:1.2.3")
     implementation 'org.postgresql:postgresql:42.2.19'
-    implementation("com.github.minndevelopment:jda-ktx:${"1a45395"}")
+    implementation("com.github.minndevelopment:jda-ktx:${"1468ea8"}")
 }
 
 test {
