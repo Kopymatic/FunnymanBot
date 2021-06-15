@@ -18,8 +18,14 @@ class TestCmd : KopyCommand() {
 
     override fun execute(event: CommandEvent?) {
         if (event == null) return
-        event.channel.sendMessage("E").reference(event.message)
-            .setActionRows(ActionRow.of(Button.success(event.member.id, "joe mama"))).queue()
+        event.channel.sendMessage("pretend theres shop stuff here").reference(event.message)
+            .setActionRows(
+                ActionRow.of(
+                    Button.primary("test", "<-"),
+                    Button.success("test", "Buy This"),
+                    Button.primary("test", "->")
+                )
+            ).queue()
     }
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) {
