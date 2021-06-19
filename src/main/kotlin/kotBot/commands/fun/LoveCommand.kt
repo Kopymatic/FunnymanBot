@@ -301,4 +301,33 @@ abstract class LoveCommand : KopyCommand() {
             "https://media1.tenor.com/images/34ee855c9461dbd1f6d1f778637a134c/tenor.gif?itemid=5615947",
         )
     }
+
+    class HeadPat : LoveCommand() {
+        init {
+            name = "HeadPat"
+            aliases = arrayOf("hp")
+            arguments = "[User as @mention]"
+            help = "Headpat someone!!"
+            reactionPercent = 30
+            category = Reference.convenienceCategory
+            possibleReactions = arrayOf("U+2764", "U+1F49B")
+        }
+
+        override var actionIdentifier: String = "head"
+        override var embedTitleText: String = "headpats"
+        override var embedFooterText: String = "headpats"
+        override var gifs: Array<String> = arrayOf(
+            "https://media1.tenor.com/images/153e9bdd80008e8c0f94110450fcbf98/tenor.gif?itemid=10534102",
+            "https://media1.tenor.com/images/16ec668d63ac6c1e8a1635b855cb1654/tenor.gif?itemid=14623443",
+            "https://media1.tenor.com/images/f330c520a8dfa461130a799faca13c7e/tenor.gif?itemid=13911345",
+            "https://media1.tenor.com/images/116fe7ede5b7976920fac3bf8067d42b/tenor.gif?itemid=9200932",
+            "https://media1.tenor.com/images/da8f0e8dd1a7f7db5298bda9cc648a9a/tenor.gif?itemid=12018819",
+            "https://media1.tenor.com/images/857aef7553857b812808a355f31bbd1f/tenor.gif?itemid=13576017",
+            "https://media1.tenor.com/images/0d2fb6ad9a6d71c3a018c0b37ffca50b/tenor.gif?itemid=16121044",
+            "https://media1.tenor.com/images/005e8df693c0f59e442b0bf95c22d0f5/tenor.gif?itemid=10947495",
+            "https://media1.tenor.com/images/1e92c03121c0bd6688d17eef8d275ea7/tenor.gif?itemid=9920853",
+            "https://media1.tenor.com/images/66bf1ff7b81aba1fabb89c92be2909ba/tenor.gif?itemid=15882394",
+            "https://media1.tenor.com/images/e12df6136755eba00b0f3d46eee134f0/tenor.gif?itemid=20467086"
+        )
+    }
 }
