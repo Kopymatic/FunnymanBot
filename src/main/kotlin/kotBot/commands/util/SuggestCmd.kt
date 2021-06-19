@@ -52,6 +52,7 @@ class SuggestCmd : KopyCommand() {
                                 title = embed.title
                                 description = embed.description
                                 color = Color.green.rgb
+                                url = embed.url
                             }).queue()
                         }
                         "❌" -> {
