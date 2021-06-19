@@ -21,7 +21,7 @@ class SuggestCmd : KopyCommand() {
         arguments = "[suggestion]"
         guildOnly = false
         category = Reference.utilityCategory
-        cooldown = 10
+        cooldown = 100
     }
 
     override suspend fun onCommandRun(event: CommandEvent, guildSettings: GuildSettings) { //This is fucking AWFUL code.
@@ -52,6 +52,7 @@ class SuggestCmd : KopyCommand() {
                                 title = embed.title
                                 description = embed.description
                                 color = Color.green.rgb
+                                url = embed.url
                             }).queue()
                         }
                         "❌" -> {

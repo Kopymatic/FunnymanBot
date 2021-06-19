@@ -29,6 +29,7 @@ class Bot {
             LoveCommand.Kiss(),
             LoveCommand.Cuddle(),
             LoveCommand.HandHold(),
+            LoveCommand.HeadPat(),
             EmbedCmd(),
             DayTrackerCmd(),
             ChooseCmd(),
