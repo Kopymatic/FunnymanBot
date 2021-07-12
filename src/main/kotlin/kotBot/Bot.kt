@@ -65,6 +65,8 @@ class Bot {
             PartnerCmd(),
             AboutCmd(),
             EmojiInfoCmd(),
+            MimicCmd(),
+            AdLibCmd(),
         )
 
         val slashCommands = mutableListOf<SlashCommand>(

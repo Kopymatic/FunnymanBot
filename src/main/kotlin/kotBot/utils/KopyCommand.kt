@@ -19,6 +19,7 @@ abstract class KopyCommand : Command() {
     val connection = Reference.connection
     var doTyping = true
     var logStatement: String? = null
+    var allowedGuilds: Array<String> = arrayOf("")
 
     /**
      * -- DO NOT OVERRIDE --
@@ -30,6 +31,19 @@ abstract class KopyCommand : Command() {
         trackStats(event)
         val guildSettings =
             if (event.channelType != ChannelType.PRIVATE) GuildSettings(event.guild.id) else GuildSettings()
+        if (allowedGuilds[0] != "" && !event.isOwner) {
+            var valid = false
+            for (id in allowedGuilds) {
+                if (id == event.guild.id) {
+                    valid = true
+                    break
+                }
+            }
+            if (!valid) {
+                event.reply("This command isnt available in this guild!")
+                return
+            }
+        }
         GlobalScope.launch {
             val start = System.currentTimeMillis()
             onCommandRun(event, guildSettings)
