@@ -1,7 +1,12 @@
 package kotBot.utils
 
+import club.minnced.discord.webhook.WebhookClientBuilder
+import net.dv8tion.jda.api.EmbedBuilder
+import net.dv8tion.jda.api.MessageBuilder
+import net.dv8tion.jda.api.entities.Icon
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
+import java.net.URL
 import java.util.*
 
 class EverythingListener : ListenerAdapter() {
@@ -22,13 +27,30 @@ class EverythingListener : ListenerAdapter() {
 
             if (guildSettings.dylanMode && event.message.referencedMessage != null) {
                 val referencedMessage = event.message.referencedMessage!!
-                event.channel.sendMessage(
-                    "**${event.member?.effectiveName}** replied to **${referencedMessage.member?.effectiveName}**\n" +
-                            "> *${
-                                referencedMessage.contentStripped.replace("\n", "\n> ").replace("@everyone", "everyone")
-                                    .replace("@here", "here")
-                            }*\n" + event.message.contentRaw
-                ).queue()
+                val targetMember = event.member!!
+                event.textChannel.createWebhook(targetMember.effectiveName)
+                    .setAvatar(Icon.from(URL(targetMember.user.avatarUrl!!).openStream()))
+                    .queue {
+                        val webhook = it
+                        val client = WebhookClientBuilder.fromJDA(webhook).buildJDA()
+                        client.send(
+                            MessageBuilder().setContent(event.message.contentRaw).setEmbed(
+                                EmbedBuilder().setColor(guildSettings.defaultColor)
+                                    .setAuthor(
+                                        "Reply to ${referencedMessage.author.asTag}",
+                                        referencedMessage.jumpUrl,
+                                        referencedMessage.author.avatarUrl
+                                    )
+                                    .setDescription(referencedMessage.contentRaw)
+                                    .build()
+                            )
+                                .build()
+                        ).get()
+                        client.close()
+                        event.message.delete().queue()
+                        webhook.delete().queue()
+                    }
+
             }
 
             if (guildSettings.doSexAlarm) {

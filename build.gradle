@@ -23,6 +23,7 @@ dependencies {
     compile("ch.qos.logback:logback-classic:1.2.3")
     implementation 'org.postgresql:postgresql:42.2.19'
     implementation("com.github.minndevelopment:jda-ktx:${"1a45395"}")
+    compile("club.minnced:discord-webhooks:0.5.7")
 }
 
 test {
