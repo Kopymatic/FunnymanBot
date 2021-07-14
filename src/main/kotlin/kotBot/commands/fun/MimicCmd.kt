@@ -12,12 +12,13 @@ import java.net.URL
 class MimicCmd : KopyCommand() {
     init {
         name = "Mimic"
+        aliases = arrayOf("mock")
         arguments = "[User to mimic as @mention] [Text to say]"
         help = "Mimics a user"
         guildOnly = true
         category = Reference.funCategory
         hidden = true
-        allowedGuilds = arrayOf("654578321543266305", "793293945437814797")
+        allowedGuilds = arrayOf("654578321543266305", "793293945437814797", "839185536367067176")
         botPermissions = arrayOf(Permission.MANAGE_WEBHOOKS)
         doTyping = false
     }
